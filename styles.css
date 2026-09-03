@@ -1,0 +1,381 @@
+/* Google Font Import (RPG Pixel Style Font) */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+::selection {
+  background-color: #c6ece9;
+  color: #fdf9f9;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdfaf6;
+  color: #333;
+}
+
+/* Navbar & Buttons */
+.hero-section {
+  background: linear-gradient(rgba(102, 0, 0, 0.88), rgba(70, 0, 0, 0.88)),
+              url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80') center/cover;
+  color: #fff;
+  padding: 20px 8%;
+  min-height: 85vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: #ffb703;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn-admin {
+  background-color: #d90429;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-main, .btn-checkout {
+  background-color: #ffb703;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-checkout:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Hero Section */
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.hero-text h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 65px;
+  margin: 10px 0 -24px 0;
+  background: linear-gradient(to bottom, #ffe600 0%, #d4af37 50%, #aa7c11 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
+}
+
+.tagline {
+  font-size: 17px;
+  font-weight: bolder;
+}
+
+/* Uncle Card & Canvas Fixes */
+.hero-img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.uncle-canvas-box {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border: 5px solid #cd0c0c;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  z-index: 100;
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25), 0 0 18px rgba(205, 12, 12, 0.5);
+}
+
+.uncle-canvas-box:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 22px rgba(205, 12, 12, 0.65);
+}
+
+.uncle-canvas-box:active {
+  transform: scale(1.08);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35), 0 0 30px rgba(205, 12, 12, 0.85);
+}
+
+.uncle-canvas-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#eyeCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* 20 Dishes Dynamic Grid */
+.dishes-section {
+  padding: 60px 8%;
+  text-align: center;
+}
+
+.dishes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.dish-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  filter: grayscale(80%);
+  transition: all 0.3s ease;
+}
+
+.dish-card:hover {
+  filter: grayscale(0%);
+  transform: translateY(-5px);
+}
+
+.dish-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.qty-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.qty-controls button {
+  width: 28px;
+  height: 28px;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cart-bar {
+  margin-top: 40px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Contact Section */
+.contact-section {
+  padding: 60px 8%;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+.contact-section h2 {
+  margin-bottom: 10px;
+}
+
+/* Modals */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.modal-content input, .modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.danger-text {
+  color: #d90429;
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+.btn-admin-verify {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.auth-status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Footer Cycle */
+.footer-section {
+  background: #111;
+  color: #fff;
+  padding: 40px 8% 10px;
+  overflow: hidden;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-animation-track {
+  width: 100%;
+  height: 60px;
+  position: relative;
+  border-bottom: 1px solid #333;
+}
+
+.looping-cycle-img {
+  width: 60px;
+  position: absolute;
+  bottom: 0;
+  animation: cycleLoop 15s linear infinite;
+}
+
+@keyframes cycleLoop {
+  0% { left: -60px; }
+  100% { left: 100%; }
+}
+
+.whatsapp-icon {
+  width: 25px;
+  position: relative;
+  top: 2px;
+  bottom: 30px;
+  right: 6px;
+}
+
+footer.footer-section .footer-content .footer-contact h3 {
+  font-size: 19px; /* Fixed sizing for responsiveness */
+  font-weight: 900;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  display: inline-block;
+
+  /* Animated RGB Green/White Gradient */
+  background: linear-gradient(
+    90deg, 
+    #006600, 
+    #ffffff, 
+    #00ff66, 
+    #ffffff, 
+    #006600
+  );
+  background-size: 300% 30%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: greenWhiteRGB 3s ease infinite;
+
+  -webkit-text-stroke: 1px #000;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.4));
+}
+
+/* Keyframes added for background gradient animation */
+@keyframes greenWhiteRGB {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  .uncle-canvas-box {
+    width: 220px;
+    height: 220px;
+  }
+  footer.footer-section .footer-content .footer-contact h3 {
+    font-size: 24px;
+  }
+}
