@@ -1,6 +1,6 @@
 const CONFIG = {
   MY_WHATSAPP_NUMBER: "923155593205",
-  AUTH_SECRET_PASS: "123456" // Admin Secret Password
+  const authCode = process.env.AUTH_CODE;
 };
 
 // Initial Dishes Data (Default)
