@@ -1,706 +1,541 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Segoe+UI:wght@400;600;700&display=swap');
+/* ==========================================
+   1. FONTS & GLOBAL RESET
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Segoe+UI:wght@400;600;700&family=Press+Start+2P&display=swap');
 
-{
-box-sizing: border-box;
-margin: 0;
-padding: 0;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-
-
-body {
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background-color: #fdfaf6;
-color: #333;
-}
-
-.hero-section {
-background: linear-gradient(rgba(102, 0, 0, 0.88), rgba(70, 0, 0, 0.88)),
-url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80') center/cover;
-color: #fff;
-padding: 20px 8%;
-min-height: 85vh;
-}
-
-.navbar {
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-
-.logo {
-font-size: 26px;
-font-weight: bold;
-color: #ffb703;
-}
-
-.nav-links {
-list-style: none;
-display: flex;
-gap: 20px;
-}
-
-.nav-links a {
-color: #fff;
-text-decoration: none;
-}
-
-.btn-admin {
-background-color: #d90429;
-color: #fff;
-border: none;
-padding: 10px 18px;
-border-radius: 6px;
-font-weight: bold;
-cursor: pointer;
-}
-
-.btn-main, .btn-checkout {
-background-color: #ffb703;
-color: #000;
-border: none;
-padding: 12px 24px;
-font-weight: bold;
-border-radius: 6px;
-cursor: pointer;
-text-decoration: none;
-display: inline-block;
-}
-
-.btn-checkout:disabled {
-background-color: #ccc;
-cursor: not-allowed;
-}
-
-.hero-content {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-top: 50px;
-}
-
-.hero-text h1 {
-font-family: 'Great Vibes', cursive;
-font-size: 65px;
-margin: 10px 0 -10px 0;
-color: #ffb703;
-}
-
-.tagline {
-font-size: 17px;
-font-weight: bold;
-}
-
-.uncle-canvas-box {
-position: relative;
-width: 280px;
-height: 280px;
-border: 5px solid #cd0c0c;
-border-radius: 16px;
-overflow: hidden;
-background: #ffffff;
-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-}
-
-.uncle-canvas-box img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-}
-
-.dishes-section {
-padding: 60px 8%;
-text-align: center;
-}
-
-.dishes-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-gap: 25px;
-margin-top: 30px;
-}
-
-.dish-card {
-background: #fff;
-padding: 15px;
-border-radius: 12px;
-box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-}
-
-.dish-card img {
-width: 100%;
-height: 140px;
-object-fit: cover;
-border-radius: 8px;
-}
-
-.qty-controls {
-display: flex;
-justify-content: center;
-align-items: center;
-gap: 12px;
-margin-top: 10px;
-}
-
-.qty-controls button {
-width: 28px;
-height: 28px;
-font-weight: bold;
-border: 1px solid #ccc;
-background: #eee;
-cursor: pointer;
-border-radius: 4px;
-}
-
-.cart-bar {
-margin-top: 40px;
-padding: 20px;
-background: #fff;
-border-radius: 8px;
-box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-
-/* Modals */
-.modal {
-display: none;
-position: fixed;
-z-index: 1000;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-background: rgba(0,0,0,0.6);
-justify-content: center;
-align-items: center;
-}
-
-.modal-content {
-background: #fff;
-padding: 25px;
-border-radius: 12px;
-width: 90%;
-max-width: 650px;
-max-height: 90vh;
-overflow-y: auto;
-position: relative;
-}
-
-.close-btn {
-position: absolute;
-right: 15px;
-top: 10px;
-font-size: 24px;
-cursor: pointer;
-}
-
-.modal-content label {
-display: block;
-margin-top: 12px;
-font-weight: bold;
-text-align: left;
-}
-
-.modal-content input, .modal-content textarea {
-width: 100%;
-padding: 10px;
-margin-top: 5px;
-border: 1px solid #ccc;
-border-radius: 6px;
-}
-
-.full-width {
-width: 100%;
-margin-top: 15px;
-}
-
-.danger-text {
-color: #d90429;
-}
-
-.btn-admin-verify {
-background: #000;
-color: #fff;
-border: none;
-padding: 10px;
-width: 100%;
-margin-top: 10px;
-cursor: pointer;
-border-radius: 6px;
-}
-
-.auth-status {
-margin-top: 10px;
-font-weight: bold;
-}
-
-/* Admin Tabs & Panel UI */
-.admin-tabs {
-display: flex;
-gap: 10px;
-margin: 15px 0;
-border-bottom: 2px solid #ddd;
-padding-bottom: 10px;
-}
-
-.tab-btn {
-padding: 8px 12px;
-border: none;
-background: #eee;
-cursor: pointer;
-border-radius: 4px;
-font-weight: bold;
-}
-
-.tab-btn.active {
-background: #d90429;
-color: #fff;
-}
-
-.tab-content {
-text-align: left;
-margin-top: 15px;
-}
-
-.admin-order-card {
-border: 1px solid #ddd;
-padding: 12px;
-margin-bottom: 10px;
-border-radius: 6px;
-background: #fdfdfd;
-}
-
-.btn-done {
-background: #28a745;
-color: #fff;
-border: none;
-padding: 6px 12px;
-border-radius: 4px;
-cursor: pointer;
-margin-top: 8px;
-font-weight: bold;
-}
-
-/* Contact & Footer */
-.contact-section {
-padding: 60px 8%;
-text-align: center;
-background-color: #f1f1f1;
-}
-
-.footer-section {
-background: #111;
-color: #fff;
-padding: 40px 8% 10px;
-overflow: hidden;
-}
-
-.footer-content {
-display: flex;
-justify-content: space-between;
-}
-
-.whatsapp-icon {
-width: 25px;
-}
-
-.footer-animation-track {
-width: 100%;
-height: 60px;
-position: relative;
-border-bottom: 1px solid #333;
-}
-
-.looping-cycle-img {
-width: 60px;
-position: absolute;
-bottom: 0;
-animation: cycleLoop 15s linear infinite;
-}
-
-@keyframes cycleLoop {
-0% { left: -60px; }
-100% { left: 100%; }
-}
-/* Google Font Import (RPG Pixel Style Font) */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 ::selection {
-background-color: #c6ece9;
-color: #fdf9f9;
+  background-color: #c6ece9;
+  color: #fdf9f9;
 }
-
-{
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-}
-
 
 body {
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background-color: #fdfaf6;
-color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdfaf6;
+  color: #333;
+  overflow-x: hidden;
 }
 
-/* Navbar & Buttons */
+/* ==========================================
+   2. HERO SECTION & NAVBAR
+   ========================================== */
 .hero-section {
-background: linear-gradient(rgba(102, 0, 0, 0.88), rgba(70, 0, 0, 0.88)),
-url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80') center/cover;
-color: #fff;
-padding: 20px 8%;
-min-height: 85vh;
+  background: linear-gradient(rgba(102, 0, 0, 0.88), rgba(70, 0, 0, 0.88)),
+              url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80') center/cover;
+  color: #fff;
+  padding: 20px 8%;
+  min-height: 85vh;
+  position: relative;
 }
 
 .navbar {
-display: flex;
-justify-content: space-between;
-align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-font-size: 26px;
-font-weight: bold;
-color: #ffb703;
+  font-size: 26px;
+  font-weight: bold;
+  color: #ffb703;
+}
+
+/* Hamburger Menu Button (Default Hidden on Desktop) */
+.hamburger-btn {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: #ffb703;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 1001;
 }
 
 .nav-links {
-list-style: none;
-display: flex;
-gap: 20px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .nav-links a {
-color: #fff;
-text-decoration: none;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
+.nav-links a:hover {
+  color: #ffb703;
+}
+
+/* Buttons */
 .btn-admin {
-background-color: #d90429;
-color: #fff;
-border: none;
-padding: 10px 18px;
-border-radius: 6px;
-font-weight: bold;
-cursor: pointer;
+  background-color: #d90429;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .btn-main, .btn-checkout {
-background-color: #ffb703;
-color: #000;
-border: none;
-padding: 12px 24px;
-font-weight: bold;
-border-radius: 6px;
-cursor: pointer;
-text-decoration: none;
-display: inline-block;
+  background-color: #ffb703;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .btn-checkout:disabled {
-background-color: #ccc;
-cursor: not-allowed;
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
-/* Hero Section */
 .hero-content {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 50px;
 }
 
 .hero-text h1 {
-font-family: 'Great Vibes', cursive;
-font-size: 65px;
-margin: 10px 0 -24px 0;
-background: linear-gradient(to bottom, #ffe600 0%, #d4af37 50%, #aa7c11 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
+  font-family: 'Great Vibes', cursive;
+  font-size: 65px;
+  margin: 10px 0 -24px 0;
+  background: linear-gradient(to bottom, #ffe600 0%, #d4af37 50%, #aa7c11 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
 }
 
 .tagline {
-font-size: 17px;
-font-weight: bolder;
+  font-size: 17px;
+  font-weight: bolder;
 }
 
 /* Uncle Card & Canvas Fixes */
 .hero-img-container {
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .uncle-canvas-box {
-position: relative;
-width: 280px;
-height: 280px;
-border: 5px solid #cd0c0c;
-border-radius: 16px;
-overflow: hidden;
-background: #ffffff;
-z-index: 100;
-cursor: pointer;
-transform: scale(1);
-transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
-box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25), 0 0 18px rgba(205, 12, 12, 0.5);
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border: 5px solid #cd0c0c;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  z-index: 100;
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25), 0 0 18px rgba(205, 12, 12, 0.5);
 }
 
 .uncle-canvas-box:hover {
-transform: scale(1.03);
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 22px rgba(205, 12, 12, 0.65);
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 22px rgba(205, 12, 12, 0.65);
 }
 
 .uncle-canvas-box:active {
-transform: scale(1.08);
-box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35), 0 0 30px rgba(205, 12, 12, 0.85);
+  transform: scale(1.08);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35), 0 0 30px rgba(205, 12, 12, 0.85);
 }
 
 .uncle-canvas-box img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 #eyeCanvas {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-/* 20 Dishes Dynamic Grid */
+/* ==========================================
+   3. DISHES SECTION & CARTS
+   ========================================== */
 .dishes-section {
-padding: 60px 8%;
-text-align: center;
+  padding: 60px 8%;
+  text-align: center;
 }
 
 .dishes-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-gap: 25px;
-margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+  width: 100%;
 }
 
 .dish-card {
-background: #fff;
-padding: 15px;
-border-radius: 12px;
-box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-filter: grayscale(80%);
-transition: all 0.3s ease;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  filter: grayscale(80%);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .dish-card:hover {
-filter: grayscale(0%);
-transform: translateY(-5px);
+  filter: grayscale(0%);
+  transform: translateY(-5px);
 }
 
 .dish-card img {
-width: 100%;
-height: 140px;
-object-fit: cover;
-border-radius: 8px;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .qty-controls {
-display: flex;
-justify-content: center;
-align-items: center;
-gap: 12px;
-margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
 }
 
 .qty-controls button {
-width: 28px;
-height: 28px;
-font-weight: bold;
-border: 1px solid #ccc;
-background: #eee;
-cursor: pointer;
-border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 .cart-bar {
-margin-top: 40px;
-padding: 20px;
-background: #fff;
-border-radius: 8px;
-box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-display: flex;
-justify-content: space-between;
-align-items: center;
+  margin-top: 40px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Contact Section */
-.contact-section {
-padding: 60px 8%;
-text-align: center;
-background-color: #f1f1f1;
-}
-
-.contact-section h2 {
-margin-bottom: 10px;
-}
-
-/* Modals */
+/* ==========================================
+   4. MODALS & ADMIN PANELS
+   ========================================== */
 .modal {
-display: none;
-position: fixed;
-z-index: 1000;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-background: rgba(0,0,0,0.6);
-justify-content: center;
-align-items: center;
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-background: #fff;
-padding: 30px;
-border-radius: 12px;
-width: 90%;
-max-width: 450px;
-position: relative;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
 }
 
 .close-btn {
-position: absolute;
-right: 15px;
-top: 10px;
-font-size: 24px;
-cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 .modal-content label {
-display: block;
-margin-top: 12px;
-font-weight: bold;
-text-align: left;
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+  text-align: left;
 }
 
 .modal-content input, .modal-content textarea {
-width: 100%;
-padding: 10px;
-margin-top: 5px;
-border: 1px solid #ccc;
-border-radius: 6px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 .full-width {
-width: 100%;
-margin-top: 15px;
+  width: 100%;
+  margin-top: 15px;
 }
 
 .danger-text {
-color: #d90429;
-font-size: 28px;
-margin-bottom: 5px;
+  color: #d90429;
+  font-size: 28px;
+  margin-bottom: 5px;
 }
 
 .btn-admin-verify {
-background: #000;
-color: #fff;
-border: none;
-padding: 10px;
-width: 100%;
-margin-top: 10px;
-cursor: pointer;
-border-radius: 6px;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 6px;
 }
 
 .auth-status {
-margin-top: 10px;
-font-weight: bold;
+  margin-top: 10px;
+  font-weight: bold;
 }
 
-/* Footer Cycle */
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  padding: 8px 12px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.tab-btn.active {
+  background: #d90429;
+  color: #fff;
+}
+
+.tab-content {
+  text-align: left;
+  margin-top: 15px;
+}
+
+.admin-order-card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  background: #fdfdfd;
+}
+
+.btn-done {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+/* ==========================================
+   5. CONTACT & FOOTER
+   ========================================== */
+.contact-section {
+  padding: 60px 8%;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+.contact-section h2 {
+  margin-bottom: 10px;
+}
+
 .footer-section {
-background: #111;
-color: #fff;
-padding: 40px 8% 10px;
-overflow: hidden;
+  background: #111;
+  color: #fff;
+  padding: 40px 8% 10px;
+  overflow: hidden;
 }
 
 .footer-content {
-display: flex;
-justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .footer-animation-track {
-width: 100%;
-height: 60px;
-position: relative;
-border-bottom: 1px solid #333;
+  width: 100%;
+  height: 60px;
+  position: relative;
+  border-bottom: 1px solid #333;
 }
 
 .looping-cycle-img {
-width: 60px;
-position: absolute;
-bottom: 0;
-animation: cycleLoop 15s linear infinite;
+  width: 60px;
+  position: absolute;
+  bottom: 0;
+  animation: cycleLoop 15s linear infinite;
 }
 
 @keyframes cycleLoop {
-0% { left: -60px; }
-100% { left: 100%; }
+  0% { left: -60px; }
+  100% { left: 100%; }
 }
 
 .whatsapp-icon {
-width: 25px;
-position: relative;
-top: 2px;
-bottom: 30px;
-right: 6px;
+  width: 25px;
+  position: relative;
+  top: 2px;
+  right: 6px;
 }
 
 footer.footer-section .footer-content .footer-contact h3 {
-font-size: 19px; /* Fixed sizing for responsiveness */
-font-weight: 900;
-margin: 0;
-text-transform: uppercase;
-letter-spacing: 3px;
-position: relative;
-display: inline-block;
+  font-size: 19px;
+  font-weight: 900;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  display: inline-block;
 
-/* Animated RGB Green/White Gradient */
-background: linear-gradient(
-90deg,
-#006600,
-#ffffff,
-#00ff66,
-#ffffff,
-#006600
-);
-background-size: 300% 30%;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-animation: greenWhiteRGB 3s ease infinite;
+  background: linear-gradient(
+    90deg, 
+    #006600, 
+    #ffffff, 
+    #00ff66, 
+    #ffffff, 
+    #006600
+  );
+  background-size: 300% 30%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: greenWhiteRGB 3s ease infinite;
 
--webkit-text-stroke: 1px #000;
-filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.4));
+  -webkit-text-stroke: 1px #000;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.4));
 }
 
-/* Keyframes added for background gradient animation */
 @keyframes greenWhiteRGB {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 480px) {
-.uncle-canvas-box {
-width: 220px;
-height: 220px;
+/* ==========================================
+   6. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET)
+   ========================================== */
+@media screen and (max-width: 768px) {
+  
+  /* Show Hamburger Button */
+  .hamburger-btn {
+    display: block;
+  }
+
+  /* Slide-in Left Drawer Menu */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: -280px; /* Hidden offscreen by default */
+    width: 250px;
+    height: 100vh;
+    background-color: #1a1a1a;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 20px 20px 20px;
+    gap: 20px;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  /* Active Class added via JS */
+  .nav-links.active {
+    left: 0;
+  }
+
+  .nav-links a, 
+  .nav-links button {
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+  }
+
+  /* Hero Layout for Mobile */
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+    margin-top: 30px;
+  }
+
+  .hero-text h1 {
+    font-size: 48px;
+  }
+
+  .uncle-canvas-box {
+    width: 230px;
+    height: 230px;
+  }
+
+  /* Mobile Dishes Grid Fix */
+  .dishes-section {
+    padding: 40px 4%;
+  }
+
+  .dishes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  /* Footer Adjustment */
+  .footer-content {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  footer.footer-section .footer-content .footer-contact h3 {
+    font-size: 22px;
+  }
 }
-footer.footer-section .footer-content .footer-contact h3 {
-font-size: 24px;
+
+@media screen and (max-width: 480px) {
+  .dishes-grid {
+    grid-template-columns: 1fr; /* Full width cards on small phones */
+  }
+
+  .cart-bar {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
 }
