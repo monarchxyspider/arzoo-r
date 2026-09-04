@@ -54,7 +54,43 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('adminModal').style.display = "flex";
   });
   document.getElementById('directContactBtn')?.addEventListener('click', openDirectWhatsApp);
+
+  // Admin Passkey Verification Event Listener (FIX ADDED HERE)
+  document.getElementById('verifyAdminBtn')?.addEventListener('click', verifyAdminPasskey);
 });
+
+// SHA-256 Passkey Hashing Helper
+async function hashPasskey(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Admin Verification Logic with Error Message
+async function verifyAdminPasskey() {
+  const inputPasskey = document.getElementById('adminAuthCode')?.value.trim();
+  const authStatus = document.getElementById('authStatus');
+
+  if (!inputPasskey) {
+    if (authStatus) {
+      authStatus.style.color = "#d90429";
+      authStatus.innerText = "Please enter passkey first!";
+    }
+    return;
+  }
+
+  const hashedInput = await hashPasskey(inputPasskey);
+
+  if (hashedInput === CONFIG.AUTH_HASH) {
+    if (authStatus) authStatus.innerText = "";
+    document.getElementById('adminLoginForm').style.display = "none";
+    document.getElementById('adminDashboard').style.display = "block";
+  } else {
+    if (authStatus) {
+      authStatus.style.color = "#d90429";
+      authStatus.innerText = "❌ Invalid Passkey! Try again.";
+    }
+  }
+}
 
 // Hamburger Navigation Setup
 function setupHamburgerMenu() {
