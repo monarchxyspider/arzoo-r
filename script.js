@@ -1,7 +1,8 @@
 const CONFIG = {
   MY_WHATSAPP_NUMBER: "923155593205",
-  process.env.AUTH_CODE;
+  AUTH_CODE: process.env.AUTH_CODE
 };
+
 
 // Initial Dishes Data (Default)
 let defaultDishes = [
