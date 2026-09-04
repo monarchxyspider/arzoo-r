@@ -37,8 +37,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  z-index: 1002;
 }
 
 .logo {
@@ -60,7 +58,6 @@ body {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
-
 .nav-links {
   list-style: none;
   display: flex;
@@ -166,6 +163,15 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+#eyeCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 /* ==========================================
@@ -292,6 +298,74 @@ body {
   margin-top: 15px;
 }
 
+.danger-text {
+  color: #d90429;
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+.btn-admin-verify {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.auth-status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  padding: 8px 12px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.tab-btn.active {
+  background: #d90429;
+  color: #fff;
+}
+
+.tab-content {
+  text-align: left;
+  margin-top: 15px;
+}
+
+.admin-order-card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  background: #fdfdfd;
+}
+
+.btn-done {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-weight: bold;
+}
+
 /* ==========================================
    5. CONTACT & FOOTER
    ========================================== */
@@ -299,6 +373,10 @@ body {
   padding: 60px 8%;
   text-align: center;
   background-color: #f1f1f1;
+}
+
+.contact-section h2 {
+  margin-bottom: 10px;
 }
 
 .footer-section {
@@ -314,26 +392,174 @@ body {
   align-items: center;
 }
 
+.footer-animation-track {
+  width: 100%;
+  height: 60px;
+  position: relative;
+  border-bottom: 1px solid #333;
+}
+
+.looping-cycle-img {
+  width: 60px;
+  position: absolute;
+  bottom: 0;
+  animation: cycleLoop 15s linear infinite;
+}
+
+@keyframes cycleLoop {
+  0% { left: -60px; }
+  100% { left: 100%; }
+}
+
+.whatsapp-icon {
+  width: 25px;
+  position: relative;
+  top: 2px;
+  right: 6px;
+}
+
+footer.footer-section .footer-content .footer-contact h3 {
+  font-size: 19px;
+  font-weight: 900;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  display: inline-block;
+
+  background: linear-gradient(
+    90deg, 
+    #006600, 
+    #ffffff, 
+    #00ff66, 
+    #ffffff, 
+    #006600
+  );
+  background-size: 300% 30%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: greenWhiteRGB 3s ease infinite;
+
+  -webkit-text-stroke: 1px #000;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.4));
+}
+
+@keyframes greenWhiteRGB {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* ==========================================
-   6. RESPONSIVE MEDIA QUERIES (MOBILE ONLY)
+   6. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET)
    ========================================== */
 @media screen and (max-width: 768px) {
   
-  /* Show Hamburger Icon Proper Place */
+  /* Show Hamburger Button */
   .hamburger-btn {
-    display: block !important;
+    display: block;
   }
 
-  /* Slide-in Navigation Drawer */
+  /* Slide-in Left Drawer Menu */
   .nav-links {
     position: fixed;
     top: 0;
-    left: -100%; /* Fully Hidden Offscreen */
+    left: -280px; /* Hidden offscreen by default */
+    width: 250px;
+    height: 100vh;
+    background-color: #1a1a1a;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 20px 20px 20px;
+    gap: 20px;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  /* Active Class added via JS */
+  .nav-links.active {
+    left: 0;
+  }
+
+  .nav-links a, 
+  .nav-links button {
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+  }
+
+  /* Hero Layout for Mobile */
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+    margin-top: 30px;
+  }
+
+  .hero-text h1 {
+    font-size: 48px;
+  }
+
+  .uncle-canvas-box {
+    width: 230px;
+    height: 230px;
+  }
+
+  /* Mobile Dishes Grid Fix */
+  .dishes-section {
+    padding: 40px 4%;
+  }
+
+  .dishes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  /* Footer Adjustment */
+  .footer-content {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  footer.footer-section .footer-content .footer-contact h3 {
+    font-size: 22px;
+  }
+}
+
+/* ==========================================
+   6. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET)
+   ========================================== */
+@media screen and (max-width: 768px) {
+  
+  /* Navbar Layout Adjustment */
+  .navbar {
+    position: relative;
+    z-index: 1002;
+  }
+
+  /* Hamburger Button Always Clickable */
+  .hamburger-btn {
+    display: block !important;
+    position: relative;
+    z-index: 1005;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Mobile Side Drawer Menu */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Fully hide offscreen */
     width: 260px;
     height: 100vh;
     background-color: #1a1a1a;
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.6);
-    display: flex !important;
+    display: flex !important; /* Force flexbox layout */
     flex-direction: column;
     align-items: flex-start;
     padding: 90px 25px 25px 25px;
@@ -342,7 +568,7 @@ body {
     z-index: 1000;
   }
 
-  /* When Active Class Added via JS */
+  /* ACTIVE STATE: Slide drawer into view */
   .nav-links.active {
     left: 0 !important;
   }
@@ -359,7 +585,7 @@ body {
     border-bottom: 1px solid #333;
   }
 
-  /* Hero Section Adjustment */
+  /* Hero Layout for Mobile */
   .hero-content {
     flex-direction: column;
     text-align: center;
