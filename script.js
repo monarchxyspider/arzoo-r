@@ -1,4 +1,4 @@
-// Global Configuration (Aap ka SHA-256 Hash Yahan Aaye Ga)
+// Global Configuration
 const CONFIG = {
   MY_WHATSAPP_NUMBER: "923006809142",
   AUTH_HASH: "0ac4bbd11735d68e2c7e29452d57548727cfb7076cf3f3fafdeb942d980bf5af"
@@ -43,25 +43,38 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('verifyAdminBtn')?.addEventListener('click', verifyAdminAccess);
   document.getElementById('addDishForm')?.addEventListener('submit', handleAddDish);
 
-  // Mobile Hamburger Drawer Logic (Fixed)
+  // Mobile Hamburger Drawer Logic (Strictly Fixed)
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const navLinks = document.getElementById('navLinks');
+  const navBackdrop = document.getElementById('navBackdrop');
 
   if (hamburgerBtn && navLinks) {
     hamburgerBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      hamburgerBtn.classList.toggle('active');
       navLinks.classList.toggle('active');
+      navBackdrop?.classList.toggle('active');
     });
 
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', () => {
+        hamburgerBtn.classList.remove('active');
         navLinks.classList.remove('active');
+        navBackdrop?.classList.remove('active');
       });
+    });
+
+    navBackdrop?.addEventListener('click', () => {
+      hamburgerBtn.classList.remove('active');
+      navLinks.classList.remove('active');
+      navBackdrop.classList.remove('active');
     });
 
     document.addEventListener('click', (e) => {
       if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+        hamburgerBtn.classList.remove('active');
         navLinks.classList.remove('active');
+        navBackdrop?.classList.remove('active');
       }
     });
   }
@@ -153,7 +166,7 @@ async function handleOrderSubmit(e) {
   orders.push(newOrder);
   localStorage.setItem('restaurant_orders', JSON.stringify(orders));
 
-  // Firebase Realtime DB / Firestore sync (If Firebase SDK is loaded in index.html)
+  // Firebase Realtime DB / Firestore sync
   if (typeof firebase !== 'undefined' && firebase.database) {
     try {
       await firebase.database().ref('orders/' + newOrder.id).set(newOrder);
