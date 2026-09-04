@@ -139,7 +139,7 @@ async function addNewDish() {
   const img = imgInput?.value.trim() || "https://via.placeholder.com/300?text=No+Image";
 
   if (!name || isNaN(price)) {
-    alert(“paste valid values of dish price and name“);
+    alert("paste valid values of dish price and name");
     return;
   }
 
@@ -148,7 +148,7 @@ async function addNewDish() {
   try {
     const dishRef = push(ref(db, 'dishes'));
     await set(dishRef, newDish);
-    alert("Dish add ho gayi!");
+    alert(“Dish have been Added!”);
     if (nameInput) nameInput.value = '';
     if (priceInput) priceInput.value = '';
     if (imgInput) imgInput.value = '';
@@ -171,7 +171,7 @@ function renderAdminDishes() {
 }
 
 window.deleteDish = async function(firebaseKey) {
-  if (confirm(“Do you want to delete this dish!.”)) {
+  if (confirm("Do you want to delete this dish!.")) {
     try {
       await remove(ref(db, `dishes/${firebaseKey}`));
     } catch (err) {
@@ -223,7 +223,7 @@ window.updateOrderStatus = async function(firebaseKey, newStatus) {
 };
 
 window.deleteOrder = async function(firebaseKey) {
-  if (confirm(“Do you want to delete this order records?”)) {
+  if (confirm("Do you want to delete this order records?")) {
     try {
       await remove(ref(db, `orders/${firebaseKey}`));
     } catch (err) {
@@ -326,7 +326,7 @@ window.processOrder = async function(type) {
   const address = document.getElementById('custAddress').value.trim();
 
   if (!name || !phone || !address) {
-    alert(“kindly complete following details”);
+    alert("kindly complete following details");
     return;
   }
 
@@ -371,7 +371,7 @@ window.processOrder = async function(type) {
     const waLink = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
     window.open(waLink, '_blank');
   } else {
-    alert(“Order Done!its no get save”);
+    alert("Order Done!its no get save");
   }
 };
 
@@ -451,6 +451,7 @@ function openDirectWhatsApp() {
   const url = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello! I want to inquire about menu and reservations.")}`;
   window.open(url, '_blank');
 }
+
 // Admin Tabs Switcher (Exposed to Global Window Scope)
 window.switchAdminTab = function(tabName) {
   // Hide all tab contents
