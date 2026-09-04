@@ -5,11 +5,26 @@ const CONFIG = {
   AUTH_HASH: "0ac4bbd11735d68e2c7e29452d57548727cfb7076cf3f3fafdeb942d980bf5af"
 };
 
-// Initial Dishes Data (Default)
-let defaultDishes = [
-  { id: 1, name: "Chicken Mutton Karahi", price: 1800, img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=300" },
-  { id: 2, name: "Special BBQ Platter", price: 1400, img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300" },
-  { id: 3, name: "Chicken Biryani", price: 350, img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300" }
+// 20 Dish Menu Database
+const dishes = [
+  { id: 1, name: "Chicken Mutton Karahi", price: "Rs. 1800", img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=300" },
+  { id: 2, name: "Special BBQ Platter", price: "Rs. 1400", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300" },
+  { id: 3, name: "Chicken Biryani", price: "Rs. 350", img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300" },
+  { id: 4, name: "Beef Nihari", price: "Rs. 850", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
+  { id: 5, name: "Chicken Haleem", price: "Rs. 400", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
+  { id: 6, name: "Seekh Kabab (4 Pcs)", price: "Rs. 600", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
+  { id: 7, name: "Chicken Tikka Piece", price: "Rs. 320", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
+  { id: 8, name: "Mutton Handi", price: "Rs. 2400", img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=300" },
+  { id: 9, name: "Rogan Josh", price: "Rs. 1600", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
+  { id: 10, name: "Reshmi Kabab", price: "Rs. 750", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
+  { id: 11, name: "Roghani Naan", price: "Rs. 80", img: "https://cdn.discordapp.com/attachments/1540374952367226920/1544742601440362616/images_9.jpeg?ex=6a999d28&is=6a984ba8&hm=d47a0dca29e9f378a432e32552f881512a13fbdfa40853f0970f402b74a66d56" },
+  { id: 12, name: "Garlic Naan", price: "Rs. 100", img: "https://cdn.discordapp.com/attachments/1540374952367226920/1544742980378951792/images_11.jpeg?ex=6a999d82&is=6a984c02&hm=65ba244be6b9bfd96b7d11a86a960234c9dd5312a089e99fefa5420f6051b5ae" },
+  { id: 13, name: "Chicken Malai Boti", price: "Rs. 900", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
+  { id: 14, name: "Fish Tikka", price: "Rs. 1400", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300" },
+  { id: 15, name: "Dal Makhni", price: "Rs. 500", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
+  { id: 16, name: "Palak Paneer", price: "Rs. 600", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
+  { id: 18, name: "Gulab Jamun (2 Pcs)", price: "Rs. 180", img: "https://cdn.discordapp.com/attachments/1540374952367226920/1544743441311731752/images_12.jpeg?ex=6a999df0&is=6a984c70&hm=d57d3589eacdda1cc77d66edf60d0e5c2cdf3e8e33dde05c343ad20a7644c7d6" },
+  { id: 20, name: "Mint Margarita", price: "Rs. 220", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300" }
 ];
 
 // Load Saved Dishes or Use Defaults
