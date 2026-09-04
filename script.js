@@ -9,10 +9,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 import { getDatabase, ref, set, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-// Firebase Configuration
+// Firebase Configuration (databaseURL added)
 const firebaseConfig = {
   apiKey: "AIzaSyA9TtLxBxm58ZwXYiWfNUhAmgsj2bWOKIc",
   authDomain: "resturant-db-f2cd9.firebaseapp.com",
+  databaseURL: "https://resturant-db-f2cd9-default-rtdb.firebaseio.com", // <-- YEH LINE ADD KAREIN
   projectId: "resturant-db-f2cd9",
   storageBucket: "resturant-db-f2cd9.firebasestorage.app",
   messagingSenderId: "46488397895",
