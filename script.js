@@ -1,6 +1,6 @@
 // Global Configuration (Aap ka SHA-256 Hash Yahan Aaye Ga)
 const CONFIG = {
-  MY_WHATSAPP_NUMBER: "92 300 6809142",
+  MY_WHATSAPP_NUMBER: "923006809142",
   AUTH_HASH: "0ac4bbd11735d68e2c7e29452d57548727cfb7076cf3f3fafdeb942d980bf5af"
 };
 
