@@ -11,7 +11,7 @@
 
 ::selection {
   background-color: #c6ece9;
-  color: #fdf9f9;
+  color: #333;
 }
 
 body {
@@ -19,6 +19,7 @@ body {
   background-color: #fdfaf6;
   color: #333;
   overflow-x: hidden;
+  position: relative;
 }
 
 /* ==========================================
@@ -26,7 +27,7 @@ body {
    ========================================== */
 .hero-section {
   background: linear-gradient(rgba(102, 0, 0, 0.88), rgba(70, 0, 0, 0.88)),
-              url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80') center/cover;
+              url('pics/hero-bg.webp') center/cover no-repeat;
   color: #fff;
   padding: 20px 8%;
   min-height: 85vh;
@@ -37,6 +38,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 100;
 }
 
 .logo {
@@ -45,7 +48,6 @@ body {
   color: hsl(43, 100%, 51%);
 }
 
-/* Hamburger Menu Button (Default Hidden on Desktop) */
 .hamburger-btn {
   display: none;
   font-size: 32px;
@@ -58,6 +60,7 @@ body {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
+
 .nav-links {
   list-style: none;
   display: flex;
@@ -76,7 +79,7 @@ body {
   color: #ffb703;
 }
 
-/* Buttons */
+/* Base Buttons */
 .btn-admin {
   background-color: #d90429;
   color: #fff;
@@ -85,6 +88,11 @@ body {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-admin:hover {
+  background-color: #ef233c;
 }
 
 .btn-main, .btn-checkout {
@@ -97,13 +105,78 @@ body {
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-main:hover, .btn-checkout:hover:not(:disabled) {
+  background-color: #ffa800;
+  transform: translateY(-2px);
 }
 
 .btn-checkout:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+  transform: none;
 }
 
+/* RGB Direct Contact Button */
+.btn-rgb-contact {
+  position: relative;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background: #111;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.2s;
+}
+
+.btn-rgb-contact::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bfb, #7a00ff, #ff00c8, #ff0000);
+  background-size: 400%;
+  border-radius: 10px;
+  z-index: -1;
+  animation: rgbGlow 12s linear infinite;
+}
+
+.btn-rgb-contact:hover {
+  transform: scale(1.04);
+}
+
+@keyframes rgbGlow {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* WhatsApp Icon Styling */
+.whatsapp-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+.btn-rgb-contact:hover .whatsapp-icon {
+  transform: rotate(12deg) scale(1.1);
+}
+
+/* Hero Content */
 .hero-content {
   display: flex;
   align-items: center;
@@ -114,7 +187,7 @@ body {
 .hero-text h1 {
   font-family: 'Great Vibes', cursive;
   font-size: 65px;
-  margin: 10px 0 -24px 0;
+  margin: 10px 0 -15px 0;
   background: linear-gradient(to bottom, #ffe600 0%, #d4af37 50%, #aa7c11 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -124,9 +197,10 @@ body {
 .tagline {
   font-size: 17px;
   font-weight: bolder;
+  margin-bottom: 20px;
 }
 
-/* Uncle Card & Canvas Fixes */
+/* Uncle Card & Canvas Layering */
 .hero-img-container {
   display: flex;
   justify-content: center;
@@ -141,9 +215,8 @@ body {
   border-radius: 16px;
   overflow: hidden;
   background: #ffffff;
-  z-index: 100;
+  z-index: 10;
   cursor: pointer;
-  transform: scale(1);
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25), 0 0 18px rgba(205, 12, 12, 0.5);
 }
@@ -151,11 +224,6 @@ body {
 .uncle-canvas-box:hover {
   transform: scale(1.03);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 22px rgba(205, 12, 12, 0.65);
-}
-
-.uncle-canvas-box:active {
-  transform: scale(1.08);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35), 0 0 30px rgba(205, 12, 12, 0.85);
 }
 
 .uncle-canvas-box img {
@@ -180,6 +248,11 @@ body {
 .dishes-section {
   padding: 60px 8%;
   text-align: center;
+}
+
+.dishes-section h2 {
+  font-size: 32px;
+  margin-bottom: 15px;
 }
 
 .dishes-grid {
@@ -223,11 +296,11 @@ body {
 }
 
 .qty-controls button {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   font-weight: bold;
   border: 1px solid #ccc;
-  background: #eee;
+  background: #f8f9fa;
   cursor: pointer;
   border-radius: 4px;
 }
@@ -244,12 +317,12 @@ body {
 }
 
 /* ==========================================
-   4. MODALS & ADMIN PANELS
+   4. MODALS & ADMIN VERIFY BUTTON
    ========================================== */
 .modal {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: 2000;
   left: 0;
   top: 0;
   width: 100%;
@@ -257,25 +330,28 @@ body {
   background: rgba(0,0,0,0.6);
   justify-content: center;
   align-items: center;
+  padding: 15px;
 }
 
 .modal-content {
   background: #fff;
   padding: 30px;
   border-radius: 12px;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .close-btn {
   position: absolute;
   right: 15px;
   top: 10px;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
+  color: #666;
 }
 
 .modal-content label {
@@ -293,81 +369,27 @@ body {
   border-radius: 6px;
 }
 
-.full-width {
+/* Admin Verify Passkey Button */
+#verifyAdminBtn, .btn-verify {
   width: 100%;
   margin-top: 15px;
-}
-
-.danger-text {
-  color: #d90429;
-  font-size: 28px;
-  margin-bottom: 5px;
-}
-
-.btn-admin-verify {
-  background: #000;
+  background-color: #2b2d42;
   color: #fff;
   border: none;
-  padding: 10px;
-  width: 100%;
-  margin-top: 10px;
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-.auth-status {
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-.admin-tabs {
-  display: flex;
-  gap: 10px;
-  margin: 15px 0;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 10px;
-}
-
-.tab-btn {
-  padding: 8px 12px;
-  border: none;
-  background: #eee;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.tab-btn.active {
-  background: #d90429;
-  color: #fff;
-}
-
-.tab-content {
-  text-align: left;
-  margin-top: 15px;
-}
-
-.admin-order-card {
-  border: 1px solid #ddd;
   padding: 12px;
-  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: bold;
   border-radius: 6px;
-  background: #fdfdfd;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.btn-done {
-  background: #28a745;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 8px;
-  font-weight: bold;
+#verifyAdminBtn:hover, .btn-verify:hover {
+  background-color: #d90429;
 }
 
 /* ==========================================
-   5. CONTACT & FOOTER
+   5. CONTACT & BICYCLE ANIMATION FOOTER
    ========================================== */
 .contact-section {
   padding: 60px 8%;
@@ -376,13 +398,15 @@ body {
 }
 
 .contact-section h2 {
-  margin-bottom: 10px;
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
 .footer-section {
   background: #111;
   color: #fff;
-  padding: 40px 8% 10px;
+  padding: 40px 8% 20px;
+  position: relative;
   overflow: hidden;
 }
 
@@ -390,185 +414,60 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
+/* Bicycle Loop Animation */
 .footer-animation-track {
   width: 100%;
-  height: 60px;
+  height: 50px;
   position: relative;
-  border-bottom: 1px solid #333;
+  overflow: hidden;
+  margin-top: 15px;
+  border-top: 1px dashed #444;
 }
 
 .looping-cycle-img {
-  width: 60px;
+  height: 40px;
+  width: auto;
   position: absolute;
-  bottom: 0;
-  animation: cycleLoop 15s linear infinite;
+  bottom: 2px;
+  left: -60px;
+  animation: bicycleDrive 10s linear infinite;
 }
 
-@keyframes cycleLoop {
+@keyframes bicycleDrive {
   0% { left: -60px; }
   100% { left: 100%; }
 }
 
-.whatsapp-icon {
-  width: 25px;
-  position: relative;
-  top: 2px;
-  right: 6px;
-}
-
-footer.footer-section .footer-content .footer-contact h3 {
-  font-size: 19px;
-  font-weight: 900;
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  position: relative;
-  display: inline-block;
-
-  background: linear-gradient(
-    90deg, 
-    #006600, 
-    #ffffff, 
-    #00ff66, 
-    #ffffff, 
-    #006600
-  );
-  background-size: 300% 30%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: greenWhiteRGB 3s ease infinite;
-
-  -webkit-text-stroke: 1px #000;
-  filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.4));
-}
-
-@keyframes greenWhiteRGB {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 /* ==========================================
-   6. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET)
+   6. RESPONSIVE MEDIA QUERIES (MOBILE ONLY)
    ========================================== */
 @media screen and (max-width: 768px) {
-  
-  /* Show Hamburger Button */
-  .hamburger-btn {
-    display: block;
-  }
 
-  /* Slide-in Left Drawer Menu */
-  .nav-links {
-    position: fixed;
-    top: 0;
-    left: -280px; /* Hidden offscreen by default */
-    width: 250px;
-    height: 100vh;
-    background-color: #1a1a1a;
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 80px 20px 20px 20px;
-    gap: 20px;
-    transition: left 0.3s ease-in-out;
-    z-index: 1000;
-  }
-
-  /* Active Class added via JS */
-  .nav-links.active {
-    left: 0;
-  }
-
-  .nav-links a, 
-  .nav-links button {
-    width: 100%;
-    text-align: left;
-    font-size: 18px;
-  }
-
-  /* Hero Layout for Mobile */
-  .hero-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 30px;
-    margin-top: 30px;
-  }
-
-  .hero-text h1 {
-    font-size: 48px;
-  }
-
-  .uncle-canvas-box {
-    width: 230px;
-    height: 230px;
-  }
-
-  /* Mobile Dishes Grid Fix */
-  .dishes-section {
-    padding: 40px 4%;
-  }
-
-  .dishes-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-  }
-
-  /* Footer Adjustment */
-  .footer-content {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-
-  footer.footer-section .footer-content .footer-contact h3 {
-    font-size: 22px;
-  }
-}
-
-/* ==========================================
-   6. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET)
-   ========================================== */
-@media screen and (max-width: 768px) {
-  
-  /* Navbar Layout Adjustment */
-  .navbar {
-    position: relative;
-    z-index: 1002;
-  }
-
-  /* Hamburger Button Always Clickable */
   .hamburger-btn {
     display: block !important;
-    position: relative;
-    z-index: 1005;
-    cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
   }
 
-  /* Mobile Side Drawer Menu */
   .nav-links {
     position: fixed;
     top: 0;
-    left: -100%; /* Fully hide offscreen */
+    left: -100%;
     width: 260px;
     height: 100vh;
     background-color: #1a1a1a;
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.6);
-    display: flex !important; /* Force flexbox layout */
+    display: flex !important;
     flex-direction: column;
     align-items: flex-start;
-    padding: 90px 25px 25px 25px;
-    gap: 25px;
+    padding: 80px 25px 25px 25px;
+    gap: 20px;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
   }
 
-  /* ACTIVE STATE: Slide drawer into view */
   .nav-links.active {
     left: 0 !important;
   }
@@ -580,21 +479,34 @@ footer.footer-section .footer-content .footer-contact h3 {
   .nav-links a {
     display: block;
     width: 100%;
-    font-size: 20px;
-    padding: 8px 0;
+    font-size: 18px;
+    padding: 10px 0;
     border-bottom: 1px solid #333;
   }
 
-  /* Hero Layout for Mobile */
+  h1, h2, h3 {
+    margin-top: 15px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .hero-section {
+    padding: 15px 5%;
+  }
+
   .hero-content {
     flex-direction: column;
     text-align: center;
     gap: 30px;
-    margin-top: 30px;
+    margin-top: 20px;
   }
 
   .hero-text h1 {
-    font-size: 44px;
+    font-size: 42px;
+    margin-bottom: 10px !important;
+  }
+
+  .tagline {
+    margin-bottom: 25px !important;
   }
 
   .uncle-canvas-box {
@@ -603,7 +515,13 @@ footer.footer-section .footer-content .footer-contact h3 {
   }
 
   .dishes-section {
-    padding: 40px 4%;
+    padding: 40px 5%;
+  }
+
+  .cart-bar {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
   }
 
   .footer-content {

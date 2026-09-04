@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Arzoo Restaurant</title>
-  <link rel="icon" type="image/jpg" href="https://cdn.discordapp.com/attachments/1540315908696965193/1544725375311941752/Screenshot_20260902_144601_WhatsApp.jpg?ex=6a998d1d&is=6a983b9d&hm=5b7ae6eb977437539126918209597068d19db71a49d1743dd8d3ed24a9c8f105">
+  <!-- Title tab par uncle image (Favicon) -->
+  <link rel="icon" type="image/webp" href="pics/uncle.webp">
   <meta name="description" content="A pure taste of authentic traditional recipes.">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -14,7 +15,11 @@
   <header class="hero-section">
     <nav class="navbar">
       <div class="logo">Arzoo's Restaurant</div>
-      <ul class="nav-links">
+      
+      <!-- Fixed: Added Hamburger Button -->
+      <button id="hamburgerBtn" class="hamburger-btn">&#9776;</button>
+
+      <ul class="nav-links" id="navLinks">
         <li><a href="#home">Home</a></li>
         <li><a href="#dishes">Dishes</a></li>
         <li><a href="#contact" id="contactNavBtn">Contact</a></li>
@@ -30,7 +35,7 @@
       </div>
       <div class="hero-img-container">
         <div class="uncle-canvas-box">
-          <img id="uncleBaseImg" src="https://cdn.discordapp.com/attachments/1540315908696965193/1544754751588012052/Screenshot_20260902_144601_WhatsApp-removebg-preview.png?ex=6a99a878&is=6a9856f8&hm=803cfd41c5831cc5451978953bd4f117299aafb2332d6cb193ed329e1ca86800" alt="Uncle Logo">
+            <img id="uncleBaseImg" src="pics/uncle.webp" alt="Uncle Logo">
         </div>
       </div>
     </div>
@@ -79,7 +84,7 @@
   <div class="modal" id="adminModal">
     <div class="modal-content admin-card">
       <span class="close-btn" id="closeAdminModal">&times;</span>
-      
+
       <!-- Passkey View -->
       <div id="adminLoginForm">
         <h2 class="danger-text">ADMIN ACCESS</h2>
@@ -95,7 +100,7 @@
       <!-- Dashboard View -->
       <div id="adminDashboard" style="display: none;">
         <h2>Admin Management Panel</h2>
-        
+
         <!-- Admin Navigation Tabs -->
         <div class="admin-tabs">
           <button class="tab-btn active" onclick="switchAdminTab('pending')">Pending Orders</button>
@@ -144,7 +149,7 @@
         <p>Traditional heritage flavor.</p>
       </div>
       <div class="footer-contact">
-        <h3>Contact <img src="https://cdn.discordapp.com/attachments/1540315908696965193/1545009756572487690/846862978837774336.webp?ex=6a9a95f6&is=6a994476&hm=28c5a1ccb14752b82a7d0fda4e729e63bf6ce02d05e8a7abfe2129c8850df272" alt="whatsapp" class="whatsapp-icon"/></h3>
+        <h3>Contact <img src="pics/whatsapp.webp" alt="WhatsApp" class="whatsapp-icon"/></h3>
         <div class="whatsapp">
           <p>WhatsApp Only Support</p>
           <p>03009263111</p>
@@ -152,7 +157,7 @@
       </div>
     </div>
     <div class="footer-animation-track">
-      <img src="https://cdn.discordapp.com/attachments/1540315908696965193/1544753621353111642/images__13_-removebg-preview.png?ex=6a99a76b&is=6a9855eb&hm=182afc4d39c94459ab4dd5cb119eba6dae9ab91ff4633f6dabefa429e1bfadeb" alt="Cycle" class="looping-cycle-img">
+      <img src="pics/delivery.webp" alt="Cycle" class="looping-cycle-img">
     </div>
   </footer>
 

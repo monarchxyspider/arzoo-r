@@ -57,20 +57,46 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+<<<<<<< HEAD
 // Hamburger Navigation Setup
 function setupHamburgerMenu() {
+=======
+  // Mobile Hamburger Drawer Logic (Strictly Fixed)
+>>>>>>> 64c139747638d215c5e560b217edfa47ae19f6f5
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const navLinks = document.getElementById('navLinks');
+  const navBackdrop = document.getElementById('navBackdrop');
 
   if (hamburgerBtn && navLinks) {
     hamburgerBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      hamburgerBtn.classList.toggle('active');
       navLinks.classList.toggle('active');
+      navBackdrop?.classList.toggle('active');
     });
 
+<<<<<<< HEAD
+=======
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburgerBtn.classList.remove('active');
+        navLinks.classList.remove('active');
+        navBackdrop?.classList.remove('active');
+      });
+    });
+
+    navBackdrop?.addEventListener('click', () => {
+      hamburgerBtn.classList.remove('active');
+      navLinks.classList.remove('active');
+      navBackdrop.classList.remove('active');
+    });
+
+>>>>>>> 64c139747638d215c5e560b217edfa47ae19f6f5
     document.addEventListener('click', (e) => {
       if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+        hamburgerBtn.classList.remove('active');
         navLinks.classList.remove('active');
+        navBackdrop?.classList.remove('active');
       }
     });
   }
@@ -162,10 +188,43 @@ window.processOrder = async function(type) {
     await set(orderRef, newOrder);
     console.log("Order saved to Firebase successfully!");
 
+<<<<<<< HEAD
     orders.push(newOrder);
     localStorage.setItem('restaurant_orders', JSON.stringify(orders));
     localStorage.setItem('active_order_id', orderId);
     activeOrderId = orderId;
+=======
+  // Firebase Realtime DB / Firestore sync
+  if (typeof firebase !== 'undefined' && firebase.database) {
+    try {
+      await firebase.database().ref('orders/' + newOrder.id).set(newOrder);
+    } catch (err) {
+      console.log("Firebase sync warning:", err);
+    }
+  }
+
+  // WhatsApp Redirect Format
+  let orderText = `*NEW ORDER RECEIVED (#${newOrder.id})*\n\n`;
+  orderText += `*Customer Details:*\n- Name: ${name}\n- Phone: ${phone}\n- Address: ${address}\n\n`;
+  orderText += `*Ordered Items:*\n`;
+  currentOrderItems.forEach(i => {
+    orderText += `- ${i.name} (Qty: ${i.qty})\n`;
+  });
+  orderText += `\n*Total Amount:* Rs. ${totalAmount}`;
+
+  const waLink = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
+  window.open(waLink, '_blank');
+
+  document.getElementById('orderModal').style.display = "none";
+  alert("Order Sent to WhatsApp & Database!");
+}
+
+// SHA-256 Helper Function
+async function hashPasskey(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+>>>>>>> 64c139747638d215c5e560b217edfa47ae19f6f5
 
     document.getElementById('orderModal').style.display = "none";
     showChatInHamburger(orderId);
@@ -247,6 +306,7 @@ function openChatWindow(orderId) {
   });
 }
 
+<<<<<<< HEAD
 async function sendChatMessage(orderId) {
   const input = document.getElementById('chatMsgInput');
   const text = input.value.trim();
@@ -265,3 +325,9 @@ async function sendChatMessage(orderId) {
     console.error("Chat send error:", err);
   }
 }
+=======
+function openDirectWhatsApp() {
+  const url = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello! I want to inquire about menu and reservations.")}`;
+  window.open(url, '_blank');
+}
+>>>>>>> 64c139747638d215c5e560b217edfa47ae19f6f5
