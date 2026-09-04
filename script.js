@@ -1,8 +1,9 @@
+// Global Configuration (Aap ka SHA-256 Hash Yahan Aaye Ga)
 const CONFIG = {
   MY_WHATSAPP_NUMBER: "923155593205",
-  AUTH_CODE: process.env.AUTH_CODE
+  // Plain text password "123456" ka SHA-256 hash
+  AUTH_HASH: "0ac4bbd11735d68e2c7e29452d57548727cfb7076cf3f3fafdeb942d980bf5af"
 };
-
 
 // Initial Dishes Data (Default)
 let defaultDishes = [
@@ -25,9 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const adminModal = document.getElementById('adminModal');
   const orderModal = document.getElementById('orderModal');
 
-  document.getElementById('adminBtn')?.addEventListener('click', () => adminModal.style.display = "flex");
-  document.getElementById('closeAdminModal')?.addEventListener('click', () => adminModal.style.display = "none");
-  document.getElementById('closeOrderModal')?.addEventListener('click', () => orderModal.style.display = "none");
+  document.getElementById('adminBtn')?.addEventListener('click', () => {
+    if (adminModal) adminModal.style.display = "flex";
+  });
+  document.getElementById('closeAdminModal')?.addEventListener('click', () => {
+    if (adminModal) adminModal.style.display = "none";
+  });
+  document.getElementById('closeOrderModal')?.addEventListener('click', () => {
+    if (orderModal) orderModal.style.display = "none";
+  });
   
   document.getElementById('checkoutBtn')?.addEventListener('click', openOrderModal);
   document.getElementById('orderForm')?.addEventListener('submit', handleOrderSubmit);
@@ -60,11 +67,15 @@ function updateQty(id, change) {
   cart[id] += change;
   if (cart[id] < 0) cart[id] = 0;
 
-  document.getElementById(`qty-${id}`).innerText = cart[id];
+  const qtyEl = document.getElementById(`qty-${id}`);
+  if (qtyEl) qtyEl.innerText = cart[id];
 
   const totalItems = Object.values(cart).reduce((a, b) => a + b, 0);
-  document.getElementById('cartCount').innerText = totalItems;
-  document.getElementById('checkoutBtn').disabled = totalItems === 0;
+  const cartCountEl = document.getElementById('cartCount');
+  const checkoutBtnEl = document.getElementById('checkoutBtn');
+
+  if (cartCountEl) cartCountEl.innerText = totalItems;
+  if (checkoutBtnEl) checkoutBtnEl.disabled = totalItems === 0;
 }
 
 // Order Creation
@@ -78,8 +89,10 @@ function openOrderModal() {
     }
   }
   summaryHTML += '</ul>';
-  summaryBox.innerHTML = summaryHTML;
-  document.getElementById('orderModal').style.display = "flex";
+  if (summaryBox) summaryBox.innerHTML = summaryHTML;
+  
+  const orderModal = document.getElementById('orderModal');
+  if (orderModal) orderModal.style.display = "flex";
 }
 
 function handleOrderSubmit(e) {
@@ -130,39 +143,48 @@ function handleOrderSubmit(e) {
   alert("Order Sent to WhatsApp & Saved!");
 }
 
+// SHA-256 Helper Function
+async function hashPasskey(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 // Admin Panel Access & Management
-function verifyAdminAccess() {
+async function verifyAdminAccess() {
   const codeInput = document.getElementById('adminAuthCode').value.trim();
   const statusEl = document.getElementById('authStatus');
 
-  if (codeInput === CONFIG.AUTH_SECRET_PASS) {
-    statusEl.style.color = "green";
-    statusEl.innerText = "Access Granted!";
+  const inputHash = await hashPasskey(codeInput);
+
+  if (inputHash === CONFIG.AUTH_HASH) {
+    if (statusEl) {
+      statusEl.style.color = "green";
+      statusEl.innerText = "Access Granted!";
+    }
     document.getElementById('adminLoginForm').style.display = "none";
     document.getElementById('adminDashboard').style.display = "block";
     renderAdminOrders();
   } else {
-    statusEl.style.color = "red";
-    statusEl.innerText = "ACCESS DENIED: Invalid Passkey!";
+    if (statusEl) {
+      statusEl.style.color = "red";
+      statusEl.innerText = "ACCESS DENIED: Invalid Passkey!";
+    }
   }
 }
 
 // Admin Tab Switcher
-function switchAdminTab(tabName) {
+window.switchAdminTab = function(tabName) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
 
   if (tabName === 'pending') {
     document.getElementById('tabPending').style.display = 'block';
-    event.target.classList.add('active');
   } else if (tabName === 'completed') {
     document.getElementById('tabCompleted').style.display = 'block';
-    event.target.classList.add('active');
   } else if (tabName === 'addDish') {
     document.getElementById('tabAddDish').style.display = 'block';
-    event.target.classList.add('active');
   }
-}
+};
 
 // Render Admin Orders Lists
 function renderAdminOrders() {
@@ -172,43 +194,45 @@ function renderAdminOrders() {
   const pendingOrders = orders.filter(o => o.status === 'Pending');
   const completedOrders = orders.filter(o => o.status === 'Completed');
 
-  // Pending List
-  if (pendingOrders.length === 0) {
-    pendingContainer.innerHTML = "<p>No pending orders.</p>";
-  } else {
-    pendingContainer.innerHTML = pendingOrders.map(order => `
-      <div class="admin-order-card">
-        <b>Order ID:</b> #${order.id}<br>
-        <b>Customer:</b> ${order.customer.name} (${order.customer.phone})<br>
-        <b>Address:</b> ${order.customer.address}<br>
-        <b>Items:</b> ${order.items.map(i => `${i.name} x${i.qty}`).join(', ')}<br>
-        <b>Total:</b> Rs. ${order.total}<br>
-        <button class="btn-done" onclick="markOrderDone(${order.id})">Mark as Done</button>
-      </div>
-    `).join('');
+  if (pendingContainer) {
+    if (pendingOrders.length === 0) {
+      pendingContainer.innerHTML = "<p>No pending orders.</p>";
+    } else {
+      pendingContainer.innerHTML = pendingOrders.map(order => `
+        <div class="admin-order-card">
+          <b>Order ID:</b> #${order.id}<br>
+          <b>Customer:</b> ${order.customer.name} (${order.customer.phone})<br>
+          <b>Address:</b> ${order.customer.address}<br>
+          <b>Items:</b> ${order.items.map(i => `${i.name} x${i.qty}`).join(', ')}<br>
+          <b>Total:</b> Rs. ${order.total}<br>
+          <button class="btn-done" onclick="markOrderDone(${order.id})">Mark as Done</button>
+        </div>
+      `).join('');
+    }
   }
 
-  // Completed List
-  if (completedOrders.length === 0) {
-    completedContainer.innerHTML = "<p>No completed orders yet.</p>";
-  } else {
-    completedContainer.innerHTML = completedOrders.map(order => `
-      <div class="admin-order-card" style="opacity: 0.8;">
-        <b>Order ID:</b> #${order.id} | <span style="color:green; font-weight:bold;">DONE</span><br>
-        <b>Customer:</b> ${order.customer.name} (${order.customer.phone})<br>
-        <b>Items:</b> ${order.items.map(i => `${i.name} x${i.qty}`).join(', ')}<br>
-        <b>Total:</b> Rs. ${order.total}
-      </div>
-    `).join('');
+  if (completedContainer) {
+    if (completedOrders.length === 0) {
+      completedContainer.innerHTML = "<p>No completed orders yet.</p>";
+    } else {
+      completedContainer.innerHTML = completedOrders.map(order => `
+        <div class="admin-order-card" style="opacity: 0.8;">
+          <b>Order ID:</b> #${order.id} | <span style="color:green; font-weight:bold;">DONE</span><br>
+          <b>Customer:</b> ${order.customer.name} (${order.customer.phone})<br>
+          <b>Items:</b> ${order.items.map(i => `${i.name} x${i.qty}`).join(', ')}<br>
+          <b>Total:</b> Rs. ${order.total}
+        </div>
+      `).join('');
+    }
   }
 }
 
 // Mark Pending -> Completed
-function markOrderDone(orderId) {
+window.markOrderDone = function(orderId) {
   orders = orders.map(o => o.id === orderId ? { ...o, status: 'Completed' } : o);
   localStorage.setItem('restaurant_orders', JSON.stringify(orders));
   renderAdminOrders();
-}
+};
 
 // Add New Dish Dynamic Form Handler
 function handleAddDish(e) {
