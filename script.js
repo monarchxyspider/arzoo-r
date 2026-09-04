@@ -79,7 +79,7 @@ function listenToFirebaseOrders() {
   });
 }
 
-// Realtime Sync: Firebase Dishes
+// Realtime Sync: Firebase Dishes (Updates both memory & localStorage)
 function listenToFirebaseDishes() {
   const dishesRef = ref(db, 'dishes');
   onValue(dishesRef, (snapshot) => {
@@ -128,7 +128,7 @@ async function verifyAdminPasskey() {
   }
 }
 
-// Add New Dish (Firebase + Local)
+// Add New Dish (Firebase + Local Storage dual saving)
 async function addNewDish() {
   const nameInput = document.getElementById('dishNameInput');
   const priceInput = document.getElementById('dishPriceInput');
@@ -146,9 +146,19 @@ async function addNewDish() {
   const newDish = { id: Date.now(), name, price, img };
 
   try {
+    // 1. Save to Firebase
     const dishRef = push(ref(db, 'dishes'));
     await set(dishRef, newDish);
-    alert(“Dish have been Added!”);
+
+    // 2. Save locally in localStorage as well
+    newDish.firebaseKey = dishRef.key;
+    dishes.push(newDish);
+    localStorage.setItem('restaurant_dishes', JSON.stringify(dishes));
+
+    renderDishes();
+    renderAdminDishes();
+
+    alert("Dish have been Added!");
     if (nameInput) nameInput.value = '';
     if (priceInput) priceInput.value = '';
     if (imgInput) imgInput.value = '';
@@ -173,7 +183,16 @@ function renderAdminDishes() {
 window.deleteDish = async function(firebaseKey) {
   if (confirm("Do you want to delete this dish!.")) {
     try {
-      await remove(ref(db, `dishes/${firebaseKey}`));
+      if (firebaseKey) {
+        await remove(ref(db, `dishes/${firebaseKey}`));
+      }
+      
+      // Local Storage clean-up
+      dishes = dishes.filter(d => d.firebaseKey !== firebaseKey);
+      localStorage.setItem('restaurant_dishes', JSON.stringify(dishes));
+      
+      renderDishes();
+      renderAdminDishes();
     } catch (err) {
       console.error("Delete Dish Error:", err);
     }
