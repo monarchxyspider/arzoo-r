@@ -1,28 +1,29 @@
-// Global Configuration (Aap ka SHA-256 Hash Yahan Aaye Ga)
+// Global Configuration
 const CONFIG = {
   MY_WHATSAPP_NUMBER: "923155593205",
-  // Plain text password "123456" ka SHA-256 hash
   AUTH_HASH: "0ac4bbd11735d68e2c7e29452d57548727cfb7076cf3f3fafdeb942d980bf5af"
 };
 
-// Initial Dishes Data (Default)
+// Initial Dishes Data
 let defaultDishes = [
   { id: 1, name: "Chicken Mutton Karahi", price: 1800, img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=300" },
   { id: 2, name: "Special BBQ Platter", price: 1400, img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300" },
   { id: 3, name: "Chicken Biryani", price: 350, img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300" }
 ];
 
-// Load Saved Dishes or Use Defaults
 let dishes = JSON.parse(localStorage.getItem('restaurant_dishes')) || defaultDishes;
 let cart = {};
 let orders = JSON.parse(localStorage.getItem('restaurant_orders')) || [];
 
+// Main Initialization Event
 document.addEventListener("DOMContentLoaded", () => {
   renderDishes();
 
+  // Navigation Click Handlers
   document.getElementById('contactNavBtn')?.addEventListener('click', scrollToContact);
   document.getElementById('directContactBtn')?.addEventListener('click', openDirectWhatsApp);
 
+  // Modals Listeners
   const adminModal = document.getElementById('adminModal');
   const orderModal = document.getElementById('orderModal');
 
@@ -40,6 +41,31 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('orderForm')?.addEventListener('submit', handleOrderSubmit);
   document.getElementById('verifyAdminBtn')?.addEventListener('click', verifyAdminAccess);
   document.getElementById('addDishForm')?.addEventListener('submit', handleAddDish);
+
+  // Mobile Hamburger Drawer Logic
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const navLinks = document.getElementById('navLinks');
+
+  if (hamburgerBtn && navLinks) {
+    hamburgerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when link clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Close menu on outside click
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+        navLinks.classList.remove('active');
+      }
+    });
+  }
 });
 
 // Render Dishes Grid
@@ -127,7 +153,6 @@ function handleOrderSubmit(e) {
   orders.push(newOrder);
   localStorage.setItem('restaurant_orders', JSON.stringify(orders));
 
-  // WhatsApp Redirect Format
   let orderText = `*NEW ORDER RECEIVED (#${newOrder.id})*\n\n`;
   orderText += `*Customer Details:*\n- Name: ${name}\n- Phone: ${phone}\n- Address: ${address}\n\n`;
   orderText += `*Ordered Items:*\n`;
@@ -143,17 +168,14 @@ function handleOrderSubmit(e) {
   alert("Order Sent to WhatsApp & Saved!");
 }
 
-// SHA-256 Helper Function
 async function hashPasskey(str) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Admin Panel Access & Management
 async function verifyAdminAccess() {
   const codeInput = document.getElementById('adminAuthCode').value.trim();
   const statusEl = document.getElementById('authStatus');
-
   const inputHash = await hashPasskey(codeInput);
 
   if (inputHash === CONFIG.AUTH_HASH) {
@@ -172,7 +194,6 @@ async function verifyAdminAccess() {
   }
 }
 
-// Admin Tab Switcher
 window.switchAdminTab = function(tabName) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
@@ -186,7 +207,6 @@ window.switchAdminTab = function(tabName) {
   }
 };
 
-// Render Admin Orders Lists
 function renderAdminOrders() {
   const pendingContainer = document.getElementById('pendingOrdersList');
   const completedContainer = document.getElementById('completedOrdersList');
@@ -227,14 +247,12 @@ function renderAdminOrders() {
   }
 }
 
-// Mark Pending -> Completed
 window.markOrderDone = function(orderId) {
   orders = orders.map(o => o.id === orderId ? { ...o, status: 'Completed' } : o);
   localStorage.setItem('restaurant_orders', JSON.stringify(orders));
   renderAdminOrders();
 };
 
-// Add New Dish Dynamic Form Handler
 function handleAddDish(e) {
   e.preventDefault();
 
@@ -242,13 +260,7 @@ function handleAddDish(e) {
   const price = parseFloat(document.getElementById('newDishPrice').value);
   const img = document.getElementById('newDishImg').value.trim();
 
-  const newDish = {
-    id: Date.now(),
-    name: name,
-    price: price,
-    img: img
-  };
-
+  const newDish = { id: Date.now(), name, price, img };
   dishes.push(newDish);
   localStorage.setItem('restaurant_dishes', JSON.stringify(dishes));
 
@@ -257,7 +269,6 @@ function handleAddDish(e) {
   alert("New Dish Added Successfully!");
 }
 
-// Scroll & Direct Chat
 function scrollToContact(e) {
   e.preventDefault();
   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -267,34 +278,3 @@ function openDirectWhatsApp() {
   const url = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello! I want to inquire about menu and reservations.")}`;
   window.open(url, '_blank');
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  renderDishes();
-
-  // Mobile Drawer Toggle Logic
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const navLinks = document.getElementById('navLinks');
-
-  if (hamburgerBtn && navLinks) {
-    hamburgerBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      navLinks.classList.toggle('active');
-    });
-
-    // Mobile menu ke kisi link par click karne se menu close ho jaye
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-      });
-    });
-
-    // Screen par kahin aur click karne par menu close ho jaye
-    document.addEventListener('click', (e) => {
-      if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-        navLinks.classList.remove('active');
-      }
-    });
-  }
-
-  // Rest of your JS code...
-});
