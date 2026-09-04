@@ -139,7 +139,7 @@ async function addNewDish() {
   const img = imgInput?.value.trim() || "https://via.placeholder.com/300?text=No+Image";
 
   if (!name || isNaN(price)) {
-    alert("Dish ka naam aur sahi price likhein!");
+    alert(“paste valid values of dish price and name“);
     return;
   }
 
@@ -171,7 +171,7 @@ function renderAdminDishes() {
 }
 
 window.deleteDish = async function(firebaseKey) {
-  if (confirm("Kya aap yeh dish delete karna chahte hain?")) {
+  if (confirm(“Do you want to delete this dish!.”)) {
     try {
       await remove(ref(db, `dishes/${firebaseKey}`));
     } catch (err) {
@@ -189,7 +189,7 @@ function renderAdminOrders() {
   const completedOrders = orders.filter(o => o.status === 'Completed');
 
   if (pendingContainer) {
-    pendingContainer.innerHTML = pendingOrders.length === 0 ? "<p>Koi pending order nahi hai.</p>" : pendingOrders.map(order => `
+    pendingContainer.innerHTML = pendingOrders.length === 0 ? "<p>There is no pending order.</p>" : pendingOrders.map(order => `
       <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px; background:#fff;">
         <h4>Order #${order.id}</h4>
         <p><b>Name:</b> ${order.customer?.name} | <b>Phone:</b> ${order.customer?.phone}</p>
@@ -223,7 +223,7 @@ window.updateOrderStatus = async function(firebaseKey, newStatus) {
 };
 
 window.deleteOrder = async function(firebaseKey) {
-  if (confirm("Kya aap yeh order record delete karna chahte hain?")) {
+  if (confirm(“Do you want to delete this order records?”)) {
     try {
       await remove(ref(db, `orders/${firebaseKey}`));
     } catch (err) {
@@ -326,7 +326,7 @@ window.processOrder = async function(type) {
   const address = document.getElementById('custAddress').value.trim();
 
   if (!name || !phone || !address) {
-    alert("Saari Details Bharein!");
+    alert(“kindly complete following details”);
     return;
   }
 
@@ -371,7 +371,7 @@ window.processOrder = async function(type) {
     const waLink = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
     window.open(waLink, '_blank');
   } else {
-    alert("Order Done! Firebase Database mein order save ho gaya hai.");
+    alert(“Order Done!its no get save”);
   }
 };
 
