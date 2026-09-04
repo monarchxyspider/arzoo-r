@@ -4,35 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Arzoo Restaurant</title>
-  
-  <!-- Title tab image (Favicon) -->
-  <link rel="icon" type="pics/webp" href="pics/uncle.webp">
-
+  <!-- Title tab par uncle image (Favicon) -->
+  <link rel="icon" type="image/webp" href="pics/uncle.webp">
   <meta name="description" content="A pure taste of authentic traditional recipes.">
   <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-
-  <!-- Mobile Backdrop Overlay -->
-  <div class="nav-backdrop" id="navBackdrop"></div>
 
   <!-- Header / Navbar -->
   <header class="hero-section">
     <nav class="navbar">
       <div class="logo">Arzoo's Restaurant</div>
-      
-      <!-- Mobile Hamburger Button -->
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle Menu">&#9776;</button>
-
-      <ul class="nav-links" id="navLinks">
+      <ul class="nav-links">
         <li><a href="#home">Home</a></li>
         <li><a href="#dishes">Dishes</a></li>
         <li><a href="#contact" id="contactNavBtn">Contact</a></li>
-        <li><button class="btn-admin" id="adminBtn">Admin Only</button></li>
       </ul>
+      <button class="btn-admin" id="adminBtn">Admin Only</button>
     </nav>
-
     <div class="hero-content">
       <div class="hero-text">
         <span class="tagline">Arzoo's Restaurant</span>
@@ -40,11 +29,9 @@
         <p>The House of pure Tradition and Taste.</p>
         <a href="#dishes" class="btn-main">View Menu &amp; Order</a>
       </div>
-
       <div class="hero-img-container">
         <div class="uncle-canvas-box">
-          <img id="uncleBaseImg" src="images/uncle.webp" alt="Uncle Logo" onerror="this.src='images/karahi.webp'">
-          <canvas id="eyeCanvas"></canvas>
+            <img id="uncleBaseImg" src="pics/uncle.webp" alt="Uncle Logo">
         </div>
       </div>
     </div>
@@ -64,11 +51,7 @@
   <section class="contact-section" id="contact">
     <h2>Contact Us</h2>
     <p>Need support or special event catering? Reach out directly to our official WhatsApp.</p>
-    <br>
-    <button class="btn-rgb-contact" id="directContactBtn">
-      <img src="images/whatsapp.webp" alt="WhatsApp" class="whatsapp-icon" onerror="this.style.display='none'">
-      Chat on WhatsApp
-    </button>
+    <button class="btn-main" id="directContactBtn">Chat on WhatsApp</button>
   </section>
 
   <!-- Order Modal -->
@@ -105,7 +88,7 @@
         <div class="admin-auth-box">
           <label>Authenticator Passkey</label>
           <input type="password" id="adminAuthCode" placeholder="Enter Secret Passkey">
-          <button class="btn-verify" id="verifyAdminBtn">Verify &amp; Access</button>
+          <button class="btn-admin-verify" id="verifyAdminBtn">Verify &amp; Access</button>
           <p class="auth-status" id="authStatus"></p>
         </div>
       </div>
@@ -143,8 +126,8 @@
             <label>Price (Rs.)</label>
             <input type="number" id="newDishPrice" required placeholder="e.g. 1500">
 
-            <label>Dish Image Relative Path / URL</label>
-            <input type="text" id="newDishImg" required placeholder="images/karahi.webp">
+            <label>Dish Image URL</label>
+            <input type="url" id="newDishImg" required placeholder="https://images.unsplash.com/...">
 
             <button type="submit" class="btn-main full-width" style="margin-top:15px;">Add Dish to Menu</button>
           </form>
@@ -156,21 +139,21 @@
 
   <!-- Footer Track -->
   <footer class="footer-section">
-    <div class="cycle-track">
-      <img src="pics/delivery.webp" alt="Cycle Delivery" class="looping-cycle-img" onerror="this.style.display='none'">
-    </div>
-    
     <div class="footer-content">
       <div class="footer-col">
-        <h3>Arzoo Restaurant</h3>
+        <h3>Arzoo</h3>
         <p>Traditional heritage flavor.</p>
       </div>
       <div class="footer-contact">
-        <h3>WhatsApp Support</h3>
+        <h3>Contact <img src="pics/whatsapp.webp" alt="WhatsApp" class="whatsapp-icon"/></h3>
         <div class="whatsapp">
+          <p>WhatsApp Only Support</p>
           <p>03009263111</p>
         </div>
       </div>
+    </div>
+    <div class="footer-animation-track">
+      <img src="pics/delivery.webp" alt="Cycle" class="looping-cycle-img">
     </div>
   </footer>
 
