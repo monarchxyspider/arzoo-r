@@ -529,4 +529,22 @@ body {
     gap: 20px;
     text-align: center;
   }
+ /* first button */
+.admin-tabs button:nth-child(1) {
+  background-color: #ff9800; /* Orange */
+  color: white;
 }
+
+/* second button (Completed) */
+.admin-tabs button:nth-child(2) {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+/* third button (Manage Menu) */
+.admin-tabs button:nth-child(3) {
+  background-color: #2196f3; /* Blue */
+  color: white;
+}
+}
+
