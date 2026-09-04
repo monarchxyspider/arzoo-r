@@ -1,21 +1,22 @@
-// Global Configuration
+// Global Configuration (Aap ka SHA-256 Hash Yahan Aaye Ga)
 const CONFIG = {
   MY_WHATSAPP_NUMBER: "923155593205",
   AUTH_HASH: "0ac4bbd11735d68e2c7e29452d57548727cfb7076cf3f3fafdeb942d980bf5af"
 };
 
-// Initial Dishes Data
+// Initial Dishes Data (Default)
 let defaultDishes = [
-  { id: 1, name: "Chicken Mutton Karahi", price: 1800, img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=300" },
-  { id: 2, name: "Special BBQ Platter", price: 1400, img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300" },
-  { id: 3, name: "Chicken Biryani", price: 350, img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300" }
+  { id: 1, name: "Chicken Mutton Karahi", price: 1800, img: "images/karahi.webp" },
+  { id: 2, name: "Special BBQ Platter", price: 1400, img: "images/bbq.webp" },
+  { id: 3, name: "Chicken Biryani", price: 350, img: "images/biryani.webp" }
 ];
 
+// Load Saved Dishes or Use Defaults
 let dishes = JSON.parse(localStorage.getItem('restaurant_dishes')) || defaultDishes;
 let cart = {};
 let orders = JSON.parse(localStorage.getItem('restaurant_orders')) || [];
 
-// Main Initialization Event
+// Main Initialization
 document.addEventListener("DOMContentLoaded", () => {
   renderDishes();
 
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('verifyAdminBtn')?.addEventListener('click', verifyAdminAccess);
   document.getElementById('addDishForm')?.addEventListener('submit', handleAddDish);
 
-  // Mobile Hamburger Drawer Logic
+  // Mobile Hamburger Drawer Logic (Fixed)
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const navLinks = document.getElementById('navLinks');
 
@@ -52,14 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
       navLinks.classList.toggle('active');
     });
 
-    // Close menu when link clicked
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('active');
       });
     });
 
-    // Close menu on outside click
     document.addEventListener('click', (e) => {
       if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target)) {
         navLinks.classList.remove('active');
@@ -104,7 +103,7 @@ function updateQty(id, change) {
   if (checkoutBtnEl) checkoutBtnEl.disabled = totalItems === 0;
 }
 
-// Order Creation
+// Order Creation & Firebase Push
 function openOrderModal() {
   const summaryBox = document.getElementById('orderSummaryBox');
   let summaryHTML = '<h4>Order Items:</h4><ul>';
@@ -121,7 +120,7 @@ function openOrderModal() {
   if (orderModal) orderModal.style.display = "flex";
 }
 
-function handleOrderSubmit(e) {
+async function handleOrderSubmit(e) {
   e.preventDefault();
 
   const name = document.getElementById('custName').value.trim();
@@ -150,9 +149,20 @@ function handleOrderSubmit(e) {
     date: new Date().toLocaleString()
   };
 
+  // Local Storage Sync
   orders.push(newOrder);
   localStorage.setItem('restaurant_orders', JSON.stringify(orders));
 
+  // Firebase Realtime DB / Firestore sync (If Firebase SDK is loaded in index.html)
+  if (typeof firebase !== 'undefined' && firebase.database) {
+    try {
+      await firebase.database().ref('orders/' + newOrder.id).set(newOrder);
+    } catch (err) {
+      console.log("Firebase sync warning:", err);
+    }
+  }
+
+  // WhatsApp Redirect Format
   let orderText = `*NEW ORDER RECEIVED (#${newOrder.id})*\n\n`;
   orderText += `*Customer Details:*\n- Name: ${name}\n- Phone: ${phone}\n- Address: ${address}\n\n`;
   orderText += `*Ordered Items:*\n`;
@@ -165,17 +175,20 @@ function handleOrderSubmit(e) {
   window.open(waLink, '_blank');
 
   document.getElementById('orderModal').style.display = "none";
-  alert("Order Sent to WhatsApp & Saved!");
+  alert("Order Sent to WhatsApp & Database!");
 }
 
+// SHA-256 Helper Function
 async function hashPasskey(str) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// Admin Panel Access & Management
 async function verifyAdminAccess() {
   const codeInput = document.getElementById('adminAuthCode').value.trim();
   const statusEl = document.getElementById('authStatus');
+
   const inputHash = await hashPasskey(codeInput);
 
   if (inputHash === CONFIG.AUTH_HASH) {
@@ -194,6 +207,7 @@ async function verifyAdminAccess() {
   }
 }
 
+// Admin Tab Switcher
 window.switchAdminTab = function(tabName) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
@@ -207,6 +221,7 @@ window.switchAdminTab = function(tabName) {
   }
 };
 
+// Render Admin Orders Lists
 function renderAdminOrders() {
   const pendingContainer = document.getElementById('pendingOrdersList');
   const completedContainer = document.getElementById('completedOrdersList');
@@ -247,12 +262,19 @@ function renderAdminOrders() {
   }
 }
 
+// Mark Pending -> Completed
 window.markOrderDone = function(orderId) {
   orders = orders.map(o => o.id === orderId ? { ...o, status: 'Completed' } : o);
   localStorage.setItem('restaurant_orders', JSON.stringify(orders));
+
+  if (typeof firebase !== 'undefined' && firebase.database) {
+    firebase.database().ref('orders/' + orderId + '/status').set('Completed');
+  }
+
   renderAdminOrders();
 };
 
+// Add New Dish Form Handler
 function handleAddDish(e) {
   e.preventDefault();
 
@@ -264,11 +286,16 @@ function handleAddDish(e) {
   dishes.push(newDish);
   localStorage.setItem('restaurant_dishes', JSON.stringify(dishes));
 
+  if (typeof firebase !== 'undefined' && firebase.database) {
+    firebase.database().ref('dishes/' + newDish.id).set(newDish);
+  }
+
   renderDishes();
   document.getElementById('addDishForm').reset();
   alert("New Dish Added Successfully!");
 }
 
+// Scroll & Direct Chat
 function scrollToContact(e) {
   e.preventDefault();
   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
