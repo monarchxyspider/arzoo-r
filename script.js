@@ -7,11 +7,8 @@ const CONFIG = {
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyA9TtLxBxm58ZwXYiWfNUhAmgsj2bWOKIc",
   authDomain: "resturant-db-f2cd9.firebaseapp.com",
@@ -27,9 +24,9 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 let defaultDishes = [
-  { id: 1, name: "Chicken Mutton Karahi", price: 1800, img: "images/karahi.webp" },
-  { id: 2, name: "Special BBQ Platter", price: 1400, img: "images/bbq.webp" },
-  { id: 3, name: "Chicken Biryani", price: 350, img: "images/biryani.webp" }
+  { id: 1, name: "Chicken Mutton Karahi", price: 1800, img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=500&q=80" },
+  { id: 2, name: "Special BBQ Platter", price: 1400, img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=500&q=80" },
+  { id: 3, name: "Chicken Biryani", price: 350, img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80" }
 ];
 
 let dishes = JSON.parse(localStorage.getItem('restaurant_dishes')) || defaultDishes;
@@ -55,14 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('adminBtn')?.addEventListener('click', () => {
     document.getElementById('adminModal').style.display = "flex";
   });
+  document.getElementById('directContactBtn')?.addEventListener('click', openDirectWhatsApp);
 });
 
-<<<<<<< HEAD
 // Hamburger Navigation Setup
 function setupHamburgerMenu() {
-=======
-  // Mobile Hamburger Drawer Logic (Strictly Fixed)
->>>>>>> 64c139747638d215c5e560b217edfa47ae19f6f5
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const navLinks = document.getElementById('navLinks');
   const navBackdrop = document.getElementById('navBackdrop');
@@ -75,8 +69,6 @@ function setupHamburgerMenu() {
       navBackdrop?.classList.toggle('active');
     });
 
-<<<<<<< HEAD
-=======
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', () => {
         hamburgerBtn.classList.remove('active');
@@ -91,7 +83,6 @@ function setupHamburgerMenu() {
       navBackdrop.classList.remove('active');
     });
 
->>>>>>> 64c139747638d215c5e560b217edfa47ae19f6f5
     document.addEventListener('click', (e) => {
       if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target)) {
         hamburgerBtn.classList.remove('active');
@@ -130,8 +121,11 @@ window.updateQty = function(id, change) {
   if (qtyEl) qtyEl.innerText = cart[id];
 
   const totalItems = Object.values(cart).reduce((a, b) => a + b, 0);
-  document.getElementById('cartCount').innerText = totalItems;
-  document.getElementById('checkoutBtn').disabled = totalItems === 0;
+  const cartCountEl = document.getElementById('cartCount');
+  const checkoutBtnEl = document.getElementById('checkoutBtn');
+
+  if (cartCountEl) cartCountEl.innerText = totalItems;
+  if (checkoutBtnEl) checkoutBtnEl.disabled = totalItems === 0;
 };
 
 function openOrderModal() {
@@ -148,7 +142,7 @@ function openOrderModal() {
   document.getElementById('orderModal').style.display = "flex";
 }
 
-// Step 2: Order Processing with Modern Firebase Write
+// Order Processing
 window.processOrder = async function(type) {
   const name = document.getElementById('custName').value.trim();
   const phone = document.getElementById('custPhone').value.trim();
@@ -182,64 +176,20 @@ window.processOrder = async function(type) {
     date: new Date().toLocaleString()
   };
 
-  // Firebase v9 Async Save
-  try {
-    const orderRef = ref(database, 'orders/' + newOrder.id);
-    await set(orderRef, newOrder);
-    console.log("Order saved to Firebase successfully!");
-
-<<<<<<< HEAD
-    orders.push(newOrder);
-    localStorage.setItem('restaurant_orders', JSON.stringify(orders));
-    localStorage.setItem('active_order_id', orderId);
-    activeOrderId = orderId;
-=======
-  // Firebase Realtime DB / Firestore sync
-  if (typeof firebase !== 'undefined' && firebase.database) {
-    try {
-      await firebase.database().ref('orders/' + newOrder.id).set(newOrder);
-    } catch (err) {
-      console.log("Firebase sync warning:", err);
-    }
-  }
-
-  // WhatsApp Redirect Format
-  let orderText = `*NEW ORDER RECEIVED (#${newOrder.id})*\n\n`;
-  orderText += `*Customer Details:*\n- Name: ${name}\n- Phone: ${phone}\n- Address: ${address}\n\n`;
-  orderText += `*Ordered Items:*\n`;
-  currentOrderItems.forEach(i => {
-    orderText += `- ${i.name} (Qty: ${i.qty})\n`;
-  });
-  orderText += `\n*Total Amount:* Rs. ${totalAmount}`;
-
-  const waLink = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
-  window.open(waLink, '_blank');
+  orders.push(newOrder);
+  localStorage.setItem('restaurant_orders', JSON.stringify(orders));
+  localStorage.setItem('active_order_id', orderId);
+  activeOrderId = orderId;
 
   document.getElementById('orderModal').style.display = "none";
-  alert("Order Sent to WhatsApp & Database!");
-}
+  showChatInHamburger(orderId);
 
-// SHA-256 Helper Function
-async function hashPasskey(str) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
->>>>>>> 64c139747638d215c5e560b217edfa47ae19f6f5
-
-    document.getElementById('orderModal').style.display = "none";
-    showChatInHamburger(orderId);
-
-    if (type === 'whatsapp') {
-      let orderText = `*NEW ORDER RECEIVED (#${newOrder.id})*\nName: ${name}\nPhone: ${phone}\nTotal: Rs. ${totalAmount}`;
-      const waLink = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
-      window.open(waLink, '_blank');
-    } else {
-      alert("Order Done! Hamburger menu mein Chat active kar di gayi hai.");
-    }
-
-  } catch (err) {
-    console.error("Firebase save failed:", err);
-    alert("Database Error: " + err.message);
+  if (type === 'whatsapp') {
+    let orderText = `*NEW ORDER RECEIVED (#${newOrder.id})*\nName: ${name}\nPhone: ${phone}\nTotal: Rs. ${totalAmount}`;
+    const waLink = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
+    window.open(waLink, '_blank');
+  } else {
+    alert("Order Done! Hamburger menu mein Chat active kar di gayi hai.");
   }
 };
 
@@ -262,7 +212,7 @@ function showChatInHamburger(orderId) {
   }
 }
 
-// Live Chat Window Sync
+// Live Chat Window
 function openChatWindow(orderId) {
   let chatModal = document.getElementById('chatModal');
   if (!chatModal) {
@@ -288,46 +238,22 @@ function openChatWindow(orderId) {
   } else {
     chatModal.style.display = 'flex';
   }
-
-  // Realtime Listen to Messages
-  const chatRef = ref(database, 'chats/' + orderId);
-  onValue(chatRef, (snapshot) => {
-    const data = snapshot.val();
-    const chatBox = document.getElementById('chatBox');
-    if (!chatBox) return;
-
-    chatBox.innerHTML = '';
-    if (data) {
-      Object.values(data).forEach(msg => {
-        chatBox.innerHTML += `<p><b>${msg.sender}:</b> ${msg.text}</p>`;
-      });
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-  });
 }
 
-<<<<<<< HEAD
 async function sendChatMessage(orderId) {
   const input = document.getElementById('chatMsgInput');
   const text = input.value.trim();
   if (!text) return;
 
-  try {
-    const chatRef = ref(database, 'chats/' + orderId);
-    const newMsgRef = push(chatRef);
-    await set(newMsgRef, {
-      sender: 'Customer',
-      text: text,
-      timestamp: Date.now()
-    });
-    input.value = '';
-  } catch (err) {
-    console.error("Chat send error:", err);
+  const chatBox = document.getElementById('chatBox');
+  if (chatBox) {
+    chatBox.innerHTML += `<p><b>You:</b> ${text}</p>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
   }
+  input.value = '';
 }
-=======
+
 function openDirectWhatsApp() {
   const url = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello! I want to inquire about menu and reservations.")}`;
   window.open(url, '_blank');
 }
->>>>>>> 64c139747638d215c5e560b217edfa47ae19f6f5
