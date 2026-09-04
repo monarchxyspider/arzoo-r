@@ -42,7 +42,7 @@ body {
 .logo {
   font-size: 26px;
   font-weight: bold;
-  color: #ffb703;
+  color: hsl(43, 100%, 51%);
 }
 
 /* Hamburger Menu Button (Default Hidden on Desktop) */
@@ -55,6 +55,8 @@ body {
   cursor: pointer;
   padding: 5px;
   z-index: 1001;
+  right: 390px;
+  
 }
 
 .nav-links {
@@ -528,14 +530,86 @@ footer.footer-section .footer-content .footer-contact h3 {
   }
 }
 
-@media screen and (max-width: 480px) {
-  .dishes-grid {
-    grid-template-columns: 1fr; /* Full width cards on small phones */
+/* ==========================================
+   6. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET)
+   ========================================== */
+@media screen and (max-width: 768px) {
+  
+  /* Navbar Layout Adjustment */
+  .navbar {
+    position: relative;
+    z-index: 1002;
   }
 
-  .cart-bar {
+  /* Hamburger Button Always Clickable */
+  .hamburger-btn {
+    display: block !important;
+    position: relative;
+    z-index: 1005;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Mobile Side Drawer Menu */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Fully hide offscreen */
+    width: 260px;
+    height: 100vh;
+    background-color: #1a1a1a;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.6);
+    display: flex !important; /* Force flexbox layout */
     flex-direction: column;
-    gap: 15px;
+    align-items: flex-start;
+    padding: 90px 25px 25px 25px;
+    gap: 25px;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+  }
+
+  /* ACTIVE STATE: Slide drawer into view */
+  .nav-links.active {
+    left: 0 !important;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    width: 100%;
+    font-size: 20px;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+  }
+
+  /* Hero Layout for Mobile */
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+    margin-top: 30px;
+  }
+
+  .hero-text h1 {
+    font-size: 44px;
+  }
+
+  .uncle-canvas-box {
+    width: 220px;
+    height: 220px;
+  }
+
+  .dishes-section {
+    padding: 40px 4%;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 20px;
     text-align: center;
   }
 }
