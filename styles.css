@@ -146,7 +146,15 @@ body {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bfb, #7a00ff, #ff00c8, #ff0000);
+  background: linear-gradient(45deg, #00ff66, 
+    #ffffff, 
+    #80ff80, 
+    #00ffd5, 
+    #ffffff, 
+    #98fb98, 
+    #25d366, 
+    #ffffff, 
+    #00ff66);
   background-size: 400%;
   border-radius: 10px;
   z-index: -1;
