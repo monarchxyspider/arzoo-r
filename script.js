@@ -1,33 +1,18 @@
-// Global Configuration
+// Global Configuration (Aap ka SHA-256 Hash Yahan Aaye Ga)
 const CONFIG = {
   MY_WHATSAPP_NUMBER: "923155593205",
-  // SHA-256 hash for password "123456"
+  // Plain text password "123456" ka SHA-256 hash
   AUTH_HASH: "0ac4bbd11735d68e2c7e29452d57548727cfb7076cf3f3fafdeb942d980bf5af"
 };
 
-// Default Menu Database (Prices in Numbers to prevent NaN errors)
-const defaultDishes = [
+// Initial Dishes Data (Default)
+let defaultDishes = [
   { id: 1, name: "Chicken Mutton Karahi", price: 1800, img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=300" },
   { id: 2, name: "Special BBQ Platter", price: 1400, img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300" },
-  { id: 3, name: "Chicken Biryani", price: 350, img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300" },
-  { id: 4, name: "Beef Nihari", price: 850, img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
-  { id: 5, name: "Chicken Haleem", price: 400, img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
-  { id: 6, name: "Seekh Kabab (4 Pcs)", price: 600, img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
-  { id: 7, name: "Chicken Tikka Piece", price: 320, img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
-  { id: 8, name: "Mutton Handi", price: 2400, img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=300" },
-  { id: 9, name: "Rogan Josh", price: 1600, img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
-  { id: 10, name: "Reshmi Kabab", price: 750, img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
-  { id: 11, name: "Roghani Naan", price: 80, img: "https://images.unsplash.com/photo-1626074353765-517a681e40be?w=300" },
-  { id: 12, name: "Garlic Naan", price: 100, img: "https://images.unsplash.com/photo-1626074353765-517a681e40be?w=300" },
-  { id: 13, name: "Chicken Malai Boti", price: 900, img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300" },
-  { id: 14, name: "Fish Tikka", price: 1400, img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=300" },
-  { id: 15, name: "Dal Makhni", price: 500, img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
-  { id: 16, name: "Palak Paneer", price: 600, img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300" },
-  { id: 18, name: "Gulab Jamun (2 Pcs)", price: 180, img: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=300" },
-  { id: 20, name: "Mint Margarita", price: 220, img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300" }
+  { id: 3, name: "Chicken Biryani", price: 350, img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300" }
 ];
 
-// Persistent Storage State
+// Load Saved Dishes or Use Defaults
 let dishes = JSON.parse(localStorage.getItem('restaurant_dishes')) || defaultDishes;
 let cart = {};
 let orders = JSON.parse(localStorage.getItem('restaurant_orders')) || [];
@@ -37,15 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById('contactNavBtn')?.addEventListener('click', scrollToContact);
   document.getElementById('directContactBtn')?.addEventListener('click', openDirectWhatsApp);
-
-  // Mobile Drawer Toggle
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const navLinks = document.getElementById('navLinks');
-  if (hamburgerBtn && navLinks) {
-    hamburgerBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-    });
-  }
 
   const adminModal = document.getElementById('adminModal');
   const orderModal = document.getElementById('orderModal');
@@ -86,7 +62,7 @@ function renderDishes() {
 }
 
 // Quantity Adjuster
-window.updateQty = function(id, change) {
+function updateQty(id, change) {
   if (!cart[id]) cart[id] = 0;
   cart[id] += change;
   if (cart[id] < 0) cart[id] = 0;
@@ -100,7 +76,7 @@ window.updateQty = function(id, change) {
 
   if (cartCountEl) cartCountEl.innerText = totalItems;
   if (checkoutBtnEl) checkoutBtnEl.disabled = totalItems === 0;
-};
+}
 
 // Order Creation
 function openOrderModal() {
@@ -109,7 +85,7 @@ function openOrderModal() {
   for (let id in cart) {
     if (cart[id] > 0) {
       const item = dishes.find(d => d.id == id);
-      if (item) summaryHTML += `<li>${item.name} x ${cart[id]} - Rs. ${item.price * cart[id]}</li>`;
+      if (item) summaryHTML += `<li>${item.name} x ${cart[id]}</li>`;
     }
   }
   summaryHTML += '</ul>';
@@ -133,9 +109,8 @@ function handleOrderSubmit(e) {
     if (cart[id] > 0) {
       const item = dishes.find(d => d.id == id);
       if (item) {
-        const itemTotal = Number(item.price) * cart[id];
         currentOrderItems.push({ name: item.name, qty: cart[id], price: item.price });
-        totalAmount += itemTotal;
+        totalAmount += item.price * cart[id];
       }
     }
   }
@@ -157,7 +132,7 @@ function handleOrderSubmit(e) {
   orderText += `*Customer Details:*\n- Name: ${name}\n- Phone: ${phone}\n- Address: ${address}\n\n`;
   orderText += `*Ordered Items:*\n`;
   currentOrderItems.forEach(i => {
-    orderText += `- ${i.name} (Qty: ${i.qty}) = Rs. ${i.price * i.qty}\n`;
+    orderText += `- ${i.name} (Qty: ${i.qty})\n`;
   });
   orderText += `\n*Total Amount:* Rs. ${totalAmount}`;
 
@@ -174,7 +149,7 @@ async function hashPasskey(str) {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Admin Panel Access
+// Admin Panel Access & Management
 async function verifyAdminAccess() {
   const codeInput = document.getElementById('adminAuthCode').value.trim();
   const statusEl = document.getElementById('authStatus');
@@ -259,7 +234,7 @@ window.markOrderDone = function(orderId) {
   renderAdminOrders();
 };
 
-// Add New Dish Handler
+// Add New Dish Dynamic Form Handler
 function handleAddDish(e) {
   e.preventDefault();
 
@@ -292,3 +267,34 @@ function openDirectWhatsApp() {
   const url = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello! I want to inquire about menu and reservations.")}`;
   window.open(url, '_blank');
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderDishes();
+
+  // Mobile Drawer Toggle Logic
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const navLinks = document.getElementById('navLinks');
+
+  if (hamburgerBtn && navLinks) {
+    hamburgerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navLinks.classList.toggle('active');
+    });
+
+    // Mobile menu ke kisi link par click karne se menu close ho jaye
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Screen par kahin aur click karne par menu close ho jaye
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+        navLinks.classList.remove('active');
+      }
+    });
+  }
+
+  // Rest of your JS code...
+});
