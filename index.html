@@ -1,90 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arzoo Restaurant</title>
-  <!-- Title tab par uncle image (Favicon) -->
-  <link rel="icon" type="image/webp" href="pics/uncle.webp">
-  <meta name="description" content="A pure taste of authentic traditional recipes.">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arzoo Restaurant</title>
+  <!-- Title tab par uncle image (Favicon) -->
+  <link rel="icon" type="image/webp" href="pics/uncle.webp">
+  <meta name="description" content="A pure taste of authentic traditional recipes.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
- 
-  <!-- Header / Navbar -->
-  <header class="hero-section">
-    <nav class="navbar">
-      <div class="logo">Arzoo's Restaurant</div>
-      
-      <!-- Fixed: Added Hamburger Button -->
-      <button id="hamburgerBtn" class="hamburger-btn">&#9776;</button>
- 
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#dishes">Dishes</a></li>
-        <li><a href="#contact" id="contactNavBtn">Contact</a></li>
-      </ul>
-      <button class="btn-admin" id="adminBtn">Admin Only</button>
-    </nav>
-    <div class="hero-content">
-      <div class="hero-text">
-        <span class="tagline">Arzoo's Restaurant</span>
-        <h1>Where Tradition Meets Taste</h1>
-        <p>The House of pure Tradition and Taste.</p>
-        <a href="#dishes" class="btn-main">View Menu &amp; Order</a>
-      </div>
-      <div class="hero-img-container">
-        <div class="uncle-canvas-box">
-            <img id="uncleBaseImg" src="pics/uncle.webp" alt="Uncle Logo">
-        </div>
-      </div>
-    </div>
-  </header>
- 
-  <!-- Dishes Grid Section -->
-  <section class="dishes-section" id="dishes">
-    <h2>Popular Traditional Dishes</h2>
-    <div class="dishes-grid" id="dishesContainer"></div>
-    <div class="cart-bar">
-      <h3>Total Items Selected: <span id="cartCount">0</span></h3>
-      <button class="btn-checkout" id="checkoutBtn" disabled>Checkout &amp; Order</button>
-    </div>
-  </section>
- 
-  <!-- Contact Section -->
-  <section class="contact-section" id="contact">
-    <h2>Contact Us</h2>
-    <p>Need support or special event catering? Reach out directly to our official WhatsApp.</p>
-    <button class="btn-main" id="directContactBtn">Chat on WhatsApp</button>
-  </section>
- 
-  <!-- Order Modal -->
-  <div class="modal" id="orderModal">
-    <div class="modal-content">
-      <span class="close-btn" id="closeOrderModal">&times;</span>
-      <h2>Complete Your Order</h2>
-      <!-- Order Modal Section -->
-<form id="orderForm" onsubmit="event.preventDefault(); processOrder('whatsapp');">
-  <label>Full Name</label>
-  <input type="text" id="custName" required placeholder="Ahmad Khan">
 
-  <label>Pakistani Phone Number</label>
-  <input type="tel" id="custPhone" required placeholder="03001234567">
+  <!-- Header / Navbar -->
+  <header class="hero-section">
+    <nav class="navbar">
+      <div class="logo">Arzoo's Restaurant</div>
+      
+      <!-- Fixed: Added Hamburger Button -->
+      <button id="hamburgerBtn" class="hamburger-btn">&#9776;</button>
 
-  <label>Complete Delivery Address</label>
-  <textarea id="custAddress" required placeholder="House #, Street #, City"></textarea>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#dishes">Dishes</a></li>
+        <li><a href="#contact" id="contactNavBtn">Contact</a></li>
+      </ul>
+      <button class="btn-admin" id="adminBtn">Admin Only</button>
+    </nav>
+    <div class="hero-content">
+      <div class="hero-text">
+        <span class="tagline">Arzoo's Restaurant</span>
+        <h1>Where Tradition Meets Taste</h1>
+        <p>The House of pure Tradition and Taste.</p>
+        <a href="#dishes" class="btn-main">View Menu &amp; Order</a>
+      </div>
+      <div class="hero-img-container">
+        <div class="uncle-canvas-box">
+            <img id="uncleBaseImg" src="pics/uncle.webp" alt="Uncle Logo">
+        </div>
+      </div>
+    </div>
+  </header>
 
-  <div class="order-summary-box" id="orderSummaryBox"></div>
+  <!-- Dishes Grid Section -->
+  <section class="dishes-section" id="dishes">
+    <h2>Popular Traditional Dishes</h2>
+    <div class="dishes-grid" id="dishesContainer"></div>
+    <div class="cart-bar">
+      <h3>Total Items Selected: <span id="cartCount">0</span></h3>
+      <button class="btn-checkout" id="checkoutBtn" disabled>Checkout &amp; Order</button>
+    </div>
+  </section>
 
-  <button type="submit" class="btn-main full-width">Send Order to WhatsApp</button>
-</form>    </div>
-  </div>
- 
-  <!-- Admin Portal Modal -->
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <h2>Contact Us</h2>
+    <p>Need support or special event catering? Reach out directly to our official WhatsApp.</p>
+    <button class="btn-main" id="directContactBtn">Chat on WhatsApp</button>
+  </section>
+
+  <!-- Order Modal -->
+  <div class="modal" id="orderModal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeOrderModal">&times;</span>
+      <h2>Complete Your Order</h2>
+      <!-- Order Modal Section -->
+      <form id="orderForm" onsubmit="event.preventDefault();">
+        <label>Full Name</label>
+        <input type="text" id="custName" required placeholder="Ahmad Khan">
+
+        <label>Pakistani Phone Number</label>
+        <input type="tel" id="custPhone" required placeholder="03001234567">
+
+        <label>Complete Delivery Address</label>
+        <textarea id="custAddress" required placeholder="House #, Street #, City"></textarea>
+
+        <div class="order-summary-box" id="orderSummaryBox"></div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <button type="button" onclick="processOrder('direct')" class="btn-main" style="background-color: #2b9348; flex: 1;">Done Order</button>
+          <button type="button" onclick="processOrder('whatsapp')" class="btn-main" style="background-color: #128c7e; flex: 1;">Send Order to WhatsApp</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Portal Modal -->
   <div class="modal" id="adminModal">
     <div class="modal-content admin-card">
       <span class="close-btn" id="closeAdminModal">&times;</span>
- 
+
       <!-- Passkey View -->
       <div id="adminLoginForm">
         <h2 class="danger-text">ADMIN ACCESS</h2>
@@ -96,74 +101,74 @@
           <p class="auth-status" id="authStatus"></p>
         </div>
       </div>
- 
+
       <!-- Dashboard View -->
       <div id="adminDashboard" style="display: none;">
         <h2>Admin Management Panel</h2>
- 
+
         <!-- Admin Navigation Tabs -->
         <div class="admin-tabs">
           <button class="admin-tab-btn active" onclick="switchAdminTab('pending')">Pending Orders</button>
           <button class="admin-tab-btn" onclick="switchAdminTab('completed')">Done / Completed Orders</button>
           <button class="admin-tab-btn" onclick="switchAdminTab('dishes')">Manage Menu & Add Dish</button>
         </div>
- 
+
         <!-- Tab 1: Pending Orders -->
         <div id="tab-pending" class="admin-tab-content" style="display: block;">
           <h3>Pending Orders List</h3>
           <div id="pendingOrdersList"></div>
         </div>
- 
+
         <!-- Tab 2: Completed Orders -->
         <div id="tab-completed" class="admin-tab-content" style="display: none;">
           <h3>Completed Orders History</h3>
           <div id="completedOrdersList"></div>
         </div>
- 
+
         <!-- Tab 3: Dishes Management & Add Dish Form -->
         <div id="tab-dishes" class="admin-tab-content" style="display: none;">
           <h3>Add New Dish to Menu</h3>
           <div style="margin-bottom: 20px;">
             <label>Dish Name</label>
             <input type="text" id="dishNameInput" placeholder="e.g. Special Chicken Karahi">
- 
+
             <label>Price (Rs.)</label>
             <input type="number" id="dishPriceInput" placeholder="e.g. 1500">
- 
+
             <label>Dish Image URL</label>
             <input type="url" id="dishImgInput" placeholder="https://images.unsplash.com/...">
- 
+
             <button type="button" id="addDishBtn" class="btn-main full-width" style="margin-top:15px;">Add Dish to Menu</button>
           </div>
- 
+
           <h3>Current Menu Items</h3>
           <div id="adminDishesList"></div>
         </div>
- 
+
       </div>
     </div>
   </div>
-  <!-- Footer Track -->
-  <footer class="footer-section">
-    <div class="footer-content">
-      <div class="footer-col">
-        <h3>Arzoo</h3>
-        <p>Traditional heritage flavor.</p>
-      </div>
-      <div class="footer-contact">
-        <h3>Contact <img src="pics/whatsapp.webp" alt="WhatsApp" class="whatsapp-icon"/></h3>
-        <div class="whatsapp">
-          <p>WhatsApp Only Support</p>
-          <p>03009263111</p>
-        </div>
-      </div>
-    </div>
-    <div class="footer-animation-track">
-      <img src="pics/delivery.webp" alt="Cycle" class="looping-cycle-img">
-    </div>
-  </footer>
- 
-  <!-- Change this -->
-<script type="module" src="script.js"></script>
+
+  <!-- Footer Track -->
+  <footer class="footer-section">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3>Arzoo</h3>
+        <p>Traditional heritage flavor.</p>
+      </div>
+      <div class="footer-contact">
+        <h3>Contact <img src="pics/whatsapp.webp" alt="WhatsApp" class="whatsapp-icon"/></h3>
+        <div class="whatsapp">
+          <p>WhatsApp Only Support</p>
+          <p>03009263111</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-animation-track">
+      <img src="pics/delivery.webp" alt="Cycle" class="looping-cycle-img">
+    </div>
+  </footer>
+
+  <script type="module" src="script.js"></script>
 </body>
 </html>
