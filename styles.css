@@ -441,6 +441,132 @@ body {
   0% { left: -60px; }
   100% { left: 100%; }
 }
+/* Container Box */
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+ /* --- Base Tab Container --- */
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+ }
+
+/* Base style for all admin tab buttons */
+.admin-tab-btn {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  flex: 1;
+  text-align: center;
+}
+
+/* =========================================
+   1. PENDING ORDERS BUTTON (First Tab)
+   ========================================= */
+.admin-tab-btn:nth-child(1) {
+  background-color: #fff3cd; /* Soft Yellow */
+  color: #856404;
+  border-color: #ffeeba;
+}
+
+.admin-tab-btn:nth-child(1):hover {
+  background-color: #ffe8a1;
+}
+
+/* Jab Pending Tab ACTIVE ho */
+.admin-tab-btn:nth-child(1).active {
+  background-color: #ffc107; /* Bright Yellow/Amber */
+  color: #000;
+  border-color: #d39e00;
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+}
+
+/* =========================================
+   2. COMPLETED / DONE ORDERS BUTTON (Second Tab)
+   ========================================= */
+.admin-tab-btn:nth-child(2) {
+  background-color: #d4edda; /* Soft Green */
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.admin-tab-btn:nth-child(2):hover {
+  background-color: #c3e6cb;
+}
+
+/* Jab Completed Tab ACTIVE ho */
+.admin-tab-btn:nth-child(2).active {
+  background-color: #2b9348; /* Darker Green */
+  color: #ffffff;
+  border-color: #1e6b33;
+  box-shadow: 0 4px 10px rgba(43, 147, 72, 0.3);
+}
+
+/* =========================================
+   3. MANAGE & ADD DISH BUTTON (Third Tab)
+   ========================================= */
+.admin-tab-btn:nth-child(3) {
+  background-color: #ef5c37; /* Neutral Dark/Gray */
+  color: #cc920a;
+  border-color: #ef5c37;
+}
+
+.admin-tab-btn:nth-child(3):hover {
+  background-color: #e27e65;
+}
+
+/* Jab Add Dish Tab ACTIVE ho */
+.admin-tab-btn:nth-child(3).active {
+  background-color: #8d2f0c; /* Deep Blue / Theme Dark */
+  color: #c4a30e;
+  border-color: #b94d04;
+  box-shadow: 0 4px 10px rgba(224, 143, 4, 0.3);
+}
+
+/* =========================================
+   4. ADD DISH TO MENU (Form Submit Button)
+   ========================================= */
+#addDishBtn {
+  background-color: #841313; /* Vibrant Coral / Red */
+  color: #dc970c;
+  border: none;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+#addDishBtn:hover {
+  background-color: #19db20;
+  color: white;
+}
+
+#addDishBtn:active {
+  transform: scale(0.98);
+
+}
+#pending-img {
+  size: 4px;
+}
+/* Image ka size aur control */
+.tab-img {
+  width: 18px;        /* Image ki width yahan se control karein */
+  height: 18px;       /* Image ki height yahan se control karein */
+  object-fit: contain; /* Image stretch/kharab nahi hogi */
+}
 
 /* ==========================================
    6. RESPONSIVE MEDIA QUERIES (MOBILE ONLY)
@@ -655,103 +781,4 @@ body {
   height: 18px;       /* Image ki height yahan se control karein */
   object-fit: contain; /* Image stretch/kharab nahi hogi */
 }
-
-}
-/* =========================================
-   1. PENDING ORDERS BUTTON (First Tab)
-   ========================================= */
-.admin-tab-btn:nth-child(1) {
-  background-color: #fff3cd; /* Soft Yellow */
-  color: #856404;
-  border-color: #ffeeba;
- }
-
-.admin-tab-btn:nth-child(1):hover {
-  background-color: #ffe8a1;
-}
-
-/* Jab Pending Tab ACTIVE ho */
-.admin-tab-btn:nth-child(1).active {
-  background-color: #ffc107; /* Bright Yellow/Amber */
-  color: #000;
-  border-color: #d39e00;
-  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
-}
-
-/* =========================================
-   2. COMPLETED / DONE ORDERS BUTTON (Second Tab)
-   ========================================= */
-.admin-tab-btn:nth-child(2) {
-  background-color: #d4edda; /* Soft Green */
-  color: #155724;
-  border-color: #c3e6cb;
-}
-
-.admin-tab-btn:nth-child(2):hover {
-  background-color: #c3e6cb;
-}
-
-/* Jab Completed Tab ACTIVE ho */
-.admin-tab-btn:nth-child(2).active {
-  background-color: #2b9348; /* Darker Green */
-  color: #ffffff;
-  border-color: #1e6b33;
-  box-shadow: 0 4px 10px rgba(43, 147, 72, 0.3);
-}
-
-/* =========================================
-   3. MANAGE & ADD DISH BUTTON (Third Tab)
-   ========================================= */
-.admin-tab-btn:nth-child(3) {
-  background-color: #ef5c37; /* Neutral Dark/Gray */
-  color: #cc920a;
-  border-color: #ef5c37;
-}
-
-.admin-tab-btn:nth-child(3):hover {
-  background-color: #e27e65;
-}
-
-/* Jab Add Dish Tab ACTIVE ho */
-.admin-tab-btn:nth-child(3).active {
-  background-color: #8d2f0c; /* Deep Blue / Theme Dark */
-  color: #c4a30e;
-  border-color: #b94d04;
-  box-shadow: 0 4px 10px rgba(224, 143, 4, 0.3);
-}
-
-/* =========================================
-   4. ADD DISH TO MENU (Form Submit Button)
-   ========================================= */
-#addDishBtn {
-  background-color: #841313; /* Vibrant Coral / Red */
-  color: #dc970c;
-  border: none;
-  padding: 12px 20px;
-  font-size: 15px;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 15px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-#addDishBtn:hover {
-  background-color: #19db20;
-  color: white;
-}
-
-#addDishBtn:active {
-  transform: scale(0.98);
-
-}
-#pending-img {
-  size: 4px;
-}
-/* Image ka size aur control */
-.tab-img {
-  width: 18px;        /* Image ki width yahan se control karein */
-  height: 18px;       /* Image ki height yahan se control karein */
-  object-fit: contain; /* Image stretch/kharab nahi hogi */
 }
