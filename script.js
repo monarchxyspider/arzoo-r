@@ -4,16 +4,13 @@ const CONFIG = {
   AUTH_HASH: "0ac4bbd11735d68e2c7e29452d57548727cfb7076cf3f3fafdeb942d980bf5af"
 };
 
-// CDN Module Imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-import { getDatabase, ref, set, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, push, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-// Firebase Configuration (databaseURL added)
 const firebaseConfig = {
   apiKey: "AIzaSyA9TtLxBxm58ZwXYiWfNUhAmgsj2bWOKIc",
   authDomain: "resturant-db-f2cd9.firebaseapp.com",
-  databaseURL: "https://resturant-db-f2cd9-default-rtdb.firebaseio.com", // <-- YEH LINE ADD KAREIN
+  databaseURL: "https://resturant-db-f2cd9-default-rtdb.firebaseio.com",
   projectId: "resturant-db-f2cd9",
   storageBucket: "resturant-db-f2cd9.firebasestorage.app",
   messagingSenderId: "46488397895",
@@ -21,10 +18,12 @@ const firebaseConfig = {
   measurementId: "G-6V0D99D5C3"
 };
 
-// Initialize Firebase
+// Initialize Firebase Database
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const db = getDatabase(app);
+
+// Export for usage across script
+export { db, ref, push, set, onValue, update, remove };
 
 let defaultDishes = [
   { id: 1, name: "Chicken Mutton Karahi", price: 1800, img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=500&q=80" },
@@ -41,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderDishes();
   setupHamburgerMenu();
   listenToFirebaseOrders();
-  listenToFirebaseDishes(); // Live Firebase Dishes Sync
+  listenToFirebaseDishes();
 
   if (activeOrderId) {
     showChatInHamburger(activeOrderId);
@@ -76,11 +75,11 @@ function listenToFirebaseOrders() {
         orders.push({ firebaseKey: key, ...data[key] });
       });
     }
-    renderAdminOrders(); // Refresh Admin Panel Orders
+    renderAdminOrders();
   });
 }
 
-// Realtime Sync: Firebase Dishes (Updates both memory & localStorage)
+// Realtime Sync: Firebase Dishes
 function listenToFirebaseDishes() {
   const dishesRef = ref(db, 'dishes');
   onValue(dishesRef, (snapshot) => {
@@ -124,12 +123,12 @@ async function verifyAdminPasskey() {
   } else {
     if (authStatus) {
       authStatus.style.color = "#d90429";
-      authStatus.innerText = " Invalid Passkey! Try again.";
+      authStatus.innerText = "Invalid Passkey! Try again.";
     }
   }
 }
 
-// Add New Dish (Firebase + Local Storage dual saving)
+// Add New Dish
 async function addNewDish() {
   const nameInput = document.getElementById('dishNameInput');
   const priceInput = document.getElementById('dishPriceInput');
@@ -140,18 +139,16 @@ async function addNewDish() {
   const img = imgInput?.value.trim() || "https://via.placeholder.com/300?text=No+Image";
 
   if (!name || isNaN(price)) {
-    alert("paste valid values of dish price and name");
+    alert("Please enter a valid dish name and price.");
     return;
   }
 
   const newDish = { id: Date.now(), name, price, img };
 
   try {
-    // 1. Save to Firebase
     const dishRef = push(ref(db, 'dishes'));
     await set(dishRef, newDish);
 
-    // 2. Save locally in localStorage as well
     newDish.firebaseKey = dishRef.key;
     dishes.push(newDish);
     localStorage.setItem('restaurant_dishes', JSON.stringify(dishes));
@@ -159,7 +156,7 @@ async function addNewDish() {
     renderDishes();
     renderAdminDishes();
 
-    alert("Dish have been Added!");
+    alert("Dish has been added successfully!");
     if (nameInput) nameInput.value = '';
     if (priceInput) priceInput.value = '';
     if (imgInput) imgInput.value = '';
@@ -182,13 +179,11 @@ function renderAdminDishes() {
 }
 
 window.deleteDish = async function(firebaseKey) {
-  if (confirm("Do you want to delete this dish!.")) {
+  if (confirm("Do you want to delete this dish?")) {
     try {
       if (firebaseKey) {
         await remove(ref(db, `dishes/${firebaseKey}`));
       }
-      
-      // Local Storage clean-up
       dishes = dishes.filter(d => d.firebaseKey !== firebaseKey);
       localStorage.setItem('restaurant_dishes', JSON.stringify(dishes));
       
@@ -200,7 +195,7 @@ window.deleteDish = async function(firebaseKey) {
   }
 };
 
-// Render Admin Orders (Pending & Completed)
+// Render Admin Orders
 function renderAdminOrders() {
   const pendingContainer = document.getElementById('pendingOrdersList');
   const completedContainer = document.getElementById('completedOrdersList');
@@ -209,21 +204,21 @@ function renderAdminOrders() {
   const completedOrders = orders.filter(o => o.status === 'Completed');
 
   if (pendingContainer) {
-    pendingContainer.innerHTML = pendingOrders.length === 0 ? "<p>There is no pending order.</p>" : pendingOrders.map(order => `
+    pendingContainer.innerHTML = pendingOrders.length === 0 ? "<p>There are no pending orders.</p>" : pendingOrders.map(order => `
       <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px; background:#fff;">
         <h4>Order #${order.id}</h4>
         <p><b>Name:</b> ${order.customer?.name} | <b>Phone:</b> ${order.customer?.phone}</p>
         <p><b>Address:</b> ${order.customer?.address}</p>
         <p><b>Items:</b> ${order.items?.map(i => `${i.name} x${i.qty}`).join(', ')}</p>
         <p><b>Total:</b> Rs. ${order.total}</p>
-        <button onclick="updateOrderStatus('${order.firebaseKey}', 'Completed')" style="background:#2b9348; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Mark Completed</button>
+        <button onclick="updateOrderStatus('${order.firebaseKey}', 'Completed')" style="background:#2b9348; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; margin-right:5px;">Mark Completed</button>
         <button onclick="deleteOrder('${order.firebaseKey}')" style="background:#d90429; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Delete</button>
       </div>
     `).join('');
   }
 
   if (completedContainer) {
-    completedContainer.innerHTML = completedOrders.length === 0 ? "<p>Koi completed order nahi hai.</p>" : completedOrders.map(order => `
+    completedContainer.innerHTML = completedOrders.length === 0 ? "<p>No completed orders found.</p>" : completedOrders.map(order => `
       <div style="border:1px solid #e0e0e0; padding:10px; margin-bottom:10px; border-radius:5px; background:#f9f9f9;">
         <h4>Order #${order.id} (Completed)</h4>
         <p><b>Customer:</b> ${order.customer?.name} (${order.customer?.phone})</p>
@@ -243,7 +238,7 @@ window.updateOrderStatus = async function(firebaseKey, newStatus) {
 };
 
 window.deleteOrder = async function(firebaseKey) {
-  if (confirm("Do you want to delete this order records?")) {
+  if (confirm("Do you want to delete this order record?")) {
     try {
       await remove(ref(db, `orders/${firebaseKey}`));
     } catch (err) {
@@ -339,14 +334,14 @@ function openOrderModal() {
   document.getElementById('orderModal').style.display = "flex";
 }
 
-// Order Processing
+// Order Processing (Updated with Cart Reset & Proper Alerts)
 window.processOrder = async function(type) {
-  const name = document.getElementById('custName').value.trim();
-  const phone = document.getElementById('custPhone').value.trim();
-  const address = document.getElementById('custAddress').value.trim();
+  const name = document.getElementById('custName')?.value.trim();
+  const phone = document.getElementById('custPhone')?.value.trim();
+  const address = document.getElementById('custAddress')?.value.trim();
 
   if (!name || !phone || !address) {
-    alert("kindly complete following details");
+    alert("Kindly complete all required details!");
     return;
   }
 
@@ -363,6 +358,11 @@ window.processOrder = async function(type) {
     }
   }
 
+  if (currentOrderItems.length === 0) {
+    alert("Please select at least one dish!");
+    return;
+  }
+
   const orderId = 'ORD-' + Date.now();
   const newOrder = {
     id: orderId,
@@ -376,22 +376,37 @@ window.processOrder = async function(type) {
   try {
     const newOrderRef = push(ref(db, 'orders'));
     await set(newOrderRef, newOrder);
+
+    // Save Active Order
+    localStorage.setItem('active_order_id', orderId);
+    activeOrderId = orderId;
+
+    // Reset Cart & UI
+    cart = {};
+    const cartCountEl = document.getElementById('cartCount');
+    const checkoutBtnEl = document.getElementById('checkoutBtn');
+    if (cartCountEl) cartCountEl.innerText = "0";
+    if (checkoutBtnEl) checkoutBtnEl.disabled = true;
+    renderDishes();
+
+    // Close Modal
+    document.getElementById('orderModal').style.display = "none";
+    showChatInHamburger(orderId);
+
+    // Form Reset
+    document.getElementById('orderForm')?.reset();
+
+    if (type === 'whatsapp') {
+      let orderText = `*NEW ORDER RECEIVED (#${newOrder.id})*\nName: ${name}\nPhone: ${phone}\nTotal: Rs. ${totalAmount}`;
+      const waLink = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
+      window.open(waLink, '_blank');
+    } else {
+      alert(`Order Submitted Successfully!\nYour Order ID is #${orderId}`);
+    }
+
   } catch (error) {
     console.error("Firebase Database Save Error:", error);
-  }
-
-  localStorage.setItem('active_order_id', orderId);
-  activeOrderId = orderId;
-
-  document.getElementById('orderModal').style.display = "none";
-  showChatInHamburger(orderId);
-
-  if (type === 'whatsapp') {
-    let orderText = `*NEW ORDER RECEIVED (#${newOrder.id})*\nName: ${name}\nPhone: ${phone}\nTotal: Rs. ${totalAmount}`;
-    const waLink = `https://wa.me/${CONFIG.MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
-    window.open(waLink, '_blank');
-  } else {
-    alert("Order Done!its no get save");
+    alert("Failed to submit order. Please check your connection!");
   }
 };
 
@@ -472,24 +487,20 @@ function openDirectWhatsApp() {
   window.open(url, '_blank');
 }
 
-// Admin Tabs Switcher (Exposed to Global Window Scope)
+// Admin Tabs Switcher
 window.switchAdminTab = function(tabName) {
-  // Hide all tab contents
   const tabs = document.querySelectorAll('.admin-tab-content');
   tabs.forEach(tab => tab.style.display = 'none');
 
-  // Remove active class from buttons
   const buttons = document.querySelectorAll('.admin-tab-btn');
   buttons.forEach(btn => btn.classList.remove('active'));
 
-  // Show selected tab content
   const selectedTab = document.getElementById(`tab-${tabName}`);
   if (selectedTab) {
     selectedTab.style.display = 'block';
   }
 
-  // Set active state on current button
-  if (event && event.currentTarget) {
-    event.currentTarget.classList.add('active');
+  if (window.event && window.event.currentTarget) {
+    window.event.currentTarget.classList.add('active');
   }
 };
