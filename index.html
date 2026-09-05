@@ -97,7 +97,9 @@
         <div class="admin-auth-box">
           <label>Authenticator Passkey</label>
           <input type="password" id="adminAuthCode" placeholder="Enter Secret Passkey">
-          <button class="btn-admin-verify" id="verifyAdminBtn">Verify &amp; Access</button>
+          <button class="btn-admin-verify" id="verifyAdminBtn">Verify &amp; Access
+            <img src="pics/passkey.webp" class="tab-img" alt="verify">
+          </button>
           <p class="auth-status" id="authStatus"></p>
         </div>
       </div>
@@ -108,10 +110,21 @@
 
         <!-- Admin Navigation Tabs -->
         <div class="admin-tabs">
-          <button class="admin-tab-btn active" onclick="switchAdminTab('pending')">Pending Orders</button>
-          <button class="admin-tab-btn" onclick="switchAdminTab('completed')">Done / Completed Orders</button>
-          <button class="admin-tab-btn" onclick="switchAdminTab('dishes')">Manage Menu & Add Dish</button>
-        </div>
+  <button class="admin-tab-btn active" onclick="switchAdminTab('pending')">
+    <img src="pics/pending.webp" class="tab-img" alt="Pending"> 
+    Pending Orders
+  </button>
+  
+  <button class="admin-tab-btn" onclick="switchAdminTab('completed')">
+    <img src="pics/done.webp" class="tab-img" alt="Done"> 
+    Done / Completed Orders
+  </button>
+  
+  <button class="admin-tab-btn" onclick="switchAdminTab('dishes')">
+    <img src="pics/burger.webp" class="tab-img" alt="Menu"> 
+    Manage Menu & Add Dish
+  </button>
+</div>
 
         <!-- Tab 1: Pending Orders -->
         <div id="tab-pending" class="admin-tab-content" style="display: block;">
@@ -172,3 +185,4 @@
   <script type="module" src="script.js"></script>
 </body>
 </html>
+
