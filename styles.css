@@ -646,7 +646,7 @@ body {
   transform: scale(0.98);
 
 }
-#pendin-img {
+#pending-img {
   size: 4px;
 }
 /* Image ka size aur control */
@@ -656,5 +656,3 @@ body {
   object-fit: contain; /* Image stretch/kharab nahi hogi */
 }
 }
-
-
