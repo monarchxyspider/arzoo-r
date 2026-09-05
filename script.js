@@ -75,8 +75,28 @@ function listenToFirebaseOrders() {
         orders.push({ firebaseKey: key, ...data[key] });
       });
     }
+
+    // Check if active order was marked as completed
+    if (activeOrderId) {
+      const activeOrderObj = orders.find(o => o.id === activeOrderId);
+      if (activeOrderObj && activeOrderObj.status === 'Completed') {
+        clearClientChat();
+      }
+    }
+
     renderAdminOrders();
   });
+}
+
+// Function to clear chat on client end
+function clearClientChat() {
+  localStorage.removeItem('active_order_id');
+  activeOrderId = null;
+  const chatItem = document.getElementById('hamburgerChatItem');
+  if (chatItem) chatItem.remove();
+
+  const chatModal = document.getElementById('chatModal');
+  if (chatModal) chatModal.style.display = 'none';
 }
 
 // Realtime Sync: Firebase Dishes
@@ -211,8 +231,11 @@ function renderAdminOrders() {
         <p><b>Address:</b> ${order.customer?.address}</p>
         <p><b>Items:</b> ${order.items?.map(i => `${i.name} x${i.qty}`).join(', ')}</p>
         <p><b>Total:</b> Rs. ${order.total}</p>
-        <button onclick="updateOrderStatus('${order.firebaseKey}', 'Completed')" style="background:#2b9348; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; margin-right:5px;">Mark Completed</button>
-        <button onclick="deleteOrder('${order.firebaseKey}')" style="background:#d90429; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Delete</button>
+        <div style="margin-top:10px;">
+          <button onclick="updateOrderStatus('${order.firebaseKey}', 'Completed')" style="background:#2b9348; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; margin-right:5px;">Mark Completed</button>
+          <button onclick="openAdminChat('${order.id}')" style="background:#023e8a; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; margin-right:5px;">💬 Open Chat</button>
+          <button onclick="deleteOrder('${order.firebaseKey}')" style="background:#d90429; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Delete</button>
+        </div>
       </div>
     `).join('');
   }
@@ -232,6 +255,9 @@ function renderAdminOrders() {
 window.updateOrderStatus = async function(firebaseKey, newStatus) {
   try {
     await update(ref(db, `orders/${firebaseKey}`), { status: newStatus });
+    if (newStatus === 'Completed') {
+      alert("Order marked as completed! Customer chat is now closed.");
+    }
   } catch (err) {
     console.error("Order Status Update Error:", err);
   }
@@ -334,7 +360,7 @@ function openOrderModal() {
   document.getElementById('orderModal').style.display = "flex";
 }
 
-// Order Processing (Updated with Cart Reset & Proper Alerts)
+// Order Processing
 window.processOrder = async function(type) {
   const name = document.getElementById('custName')?.value.trim();
   const phone = document.getElementById('custPhone')?.value.trim();
@@ -410,7 +436,7 @@ window.processOrder = async function(type) {
   }
 };
 
-// Hamburger Chat Feature
+// Hamburger Chat Feature for Client
 function showChatInHamburger(orderId) {
   const navLinks = document.getElementById('navLinks');
   if (!navLinks) return;
@@ -424,13 +450,18 @@ function showChatInHamburger(orderId) {
 
     document.getElementById('openChatBtn').addEventListener('click', (e) => {
       e.preventDefault();
-      openChatWindow(orderId);
+      openChatWindow(orderId, "Customer");
     });
   }
 }
 
-// Live Chat Window
-function openChatWindow(orderId) {
+// Admin Chat Launcher
+window.openAdminChat = function(orderId) {
+  openChatWindow(orderId, "Admin");
+};
+
+// Live Chat Window (Shared for Admin & Customer)
+function openChatWindow(orderId, senderRole = "Customer") {
   let chatModal = document.getElementById('chatModal');
   if (!chatModal) {
     chatModal = document.createElement('div');
@@ -438,48 +469,69 @@ function openChatWindow(orderId) {
     chatModal.className = 'modal';
     chatModal.style.display = 'flex';
     chatModal.innerHTML = `
-      <div class="modal-content" style="max-width:400px;">
-        <span class="close-btn" id="closeChatModal">&times;</span>
-        <h3>Order Support Chat (#${orderId})</h3>
-        <div id="chatBox" style="height:200px; overflow-y:auto; border:1px solid #ccc; padding:10px; margin:10px 0;"></div>
-        <div style="display:flex; gap:5px;">
-          <input type="text" id="chatMsgInput" placeholder="Type message..." style="flex:1;">
-          <button id="sendChatBtn" class="btn-main">Send</button>
+      <div class="modal-content" style="max-width:400px; position:relative;">
+        <span class="close-btn" id="closeChatModal" style="cursor:pointer; float:right; font-weight:bold;">&times;</span>
+        <h3 id="chatTitle">Support Chat (#${orderId})</h3>
+        <div id="chatBox" style="height:220px; overflow-y:auto; border:1px solid #ccc; padding:10px; margin:10px 0; background:#fefefe; border-radius:5px;"></div>
+        <div id="chatControls" style="display:flex; gap:5px;">
+          <input type="text" id="chatMsgInput" placeholder="Type message..." style="flex:1; padding:8px; border:1px solid #ccc; border-radius:4px;">
+          <button id="sendChatBtn" style="background:#d90429; color:white; border:none; padding:8px 15px; border-radius:4px; cursor:pointer;">Send</button>
         </div>
       </div>
     `;
     document.body.appendChild(chatModal);
-
-    document.getElementById('closeChatModal').onclick = () => chatModal.style.display = 'none';
-    document.getElementById('sendChatBtn').onclick = () => sendChatMessage(orderId);
   } else {
     chatModal.style.display = 'flex';
+    document.getElementById('chatTitle').innerText = `Support Chat (#${orderId})`;
   }
+
+  document.getElementById('closeChatModal').onclick = () => chatModal.style.display = 'none';
+  
+  const sendBtn = document.getElementById('sendChatBtn');
+  sendBtn.onclick = () => sendChatMessage(orderId, senderRole);
+
+  // Sync Messages from Firebase Realtime DB
+  const chatRef = ref(db, `chats/${orderId}`);
+  onValue(chatRef, (snapshot) => {
+    const chatBox = document.getElementById('chatBox');
+    if (!chatBox) return;
+
+    chatBox.innerHTML = '';
+    const data = snapshot.val();
+    if (data) {
+      Object.values(data).forEach(msg => {
+        const isSelf = msg.sender === senderRole;
+        chatBox.innerHTML += `
+          <div style="margin-bottom:8px; text-align:${isSelf ? 'right' : 'left'};">
+            <span style="display:inline-block; background:${isSelf ? '#023e8a' : '#e0e0e0'}; color:${isSelf ? '#fff' : '#000'}; padding:6px 10px; border-radius:8px; max-width:80%; font-size:14px;">
+              <b>${msg.sender}:</b> ${msg.message}
+            </span>
+          </div>
+        `;
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    } else {
+      chatBox.innerHTML = '<p style="color:#888; font-size:12px; text-align:center;">No messages yet.</p>';
+    }
+  });
 }
 
-async function sendChatMessage(orderId) {
+async function sendChatMessage(orderId, senderRole) {
   const input = document.getElementById('chatMsgInput');
-  const text = input.value.trim();
+  const text = input?.value.trim();
   if (!text) return;
-
-  const chatBox = document.getElementById('chatBox');
-  if (chatBox) {
-    chatBox.innerHTML += `<p><b>You:</b> ${text}</p>`;
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
 
   try {
     const msgRef = push(ref(db, `chats/${orderId}`));
     await set(msgRef, {
-      sender: "Customer",
+      sender: senderRole,
       message: text,
       timestamp: Date.now()
     });
+    if (input) input.value = '';
   } catch (err) {
     console.error("Firebase Chat Save Error:", err);
   }
-
-  input.value = '';
 }
 
 function openDirectWhatsApp() {
